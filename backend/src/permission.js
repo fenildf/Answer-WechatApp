@@ -12,6 +12,13 @@ router.beforeEach((to,from,next)=>{
     NProgress.start()
     if(getToken()){
         console.log("getToken")
+        console.log(getToken())
+        if (to.path === '/login') {
+            next({ path: '/' })
+            NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
+        }else{
+            next()
+        }
     }else{
         if(whiteList.indexOf(to.path) !== -1){
             next()
