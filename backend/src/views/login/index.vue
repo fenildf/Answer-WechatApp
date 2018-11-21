@@ -1,6 +1,6 @@
 <template>
     <div class="login-container">
-        <el-form ref="form" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+        <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
             <h3 class="title">管理后台</h3>
             <el-form-item prop="username">
                 <span class="svg-container">
@@ -15,7 +15,7 @@
                 <el-input v-model="loginForm.password" name="password" type="password" auto-complete="on" placeholder="password"/>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" style="width:100%;">
+                <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
                     登录
                 </el-button>
             </el-form-item>
@@ -35,7 +35,7 @@
             }
             const validatePassWord = (rule,value, callback) => {
                 if (!value.length) {
-                    callback(new Error('请输入用户名'));
+                    callback(new Error('请输入密码'));
                 } else {
                     console.log("ttt")
                     callback()
@@ -49,7 +49,35 @@
                 loginRules:{
                     username:[{ require:true,trigger: 'blur', validator: validateUserName  }],
                     password:[{ require:true,trigger: 'blur', validator: validatePassWord  }]
-                }
+                },
+                loading:false
+            }
+        },
+//        watch:{
+//            $route: {
+//                handler: function(route) {
+//                    this.redirect = route.query && route.query.redirect
+//                },
+//                immediate: true
+//            }
+//        },
+        methods:{
+            handleLogin(){
+                console.log(this.$refs)
+                this.$refs.loginForm.validate(valid=>{
+                    if(valid){
+                        this.loading = true
+                        this.$store.dispatch('Login',this.loginForm).then(()=>{
+                            this.loading = false
+                            this.$router.push({path:this.redirect || '/'})
+                        }).catch(() => {
+                            this.loading = false
+                        })
+                    }else{
+                        console.log('error')
+                        return false
+                    }
+                })
             }
         }
     }
