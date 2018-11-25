@@ -1,12 +1,42 @@
 {
-  "pages":[
+  "pages": [
     "pages/index/index",
     "pages/logs/logs"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "selectedColor": "#2db7f5",
+    "color": "#707070",
+    "list": [
+      {
+        "text": "答题",
+        "iconPath": "images/answer.png",
+        "selectedIconPath": "images/answer-select.png",
+        "pagePath": "pages/index/index"
+      },
+      {
+        "text": "错题",
+        "iconPath": "images/wrong.png",
+        "selectedIconPath": "images/wrong-select.png",
+        "pagePath": "pages/index/index"
+      },
+      {
+        "text": "排名",
+        "iconPath": "images/sort.png",
+        "selectedIconPath": "images/sort-select.png",
+        "pagePath": "pages/index/index"
+      },
+      {
+        "text": "我的",
+        "iconPath": "images/my.png",
+        "selectedIconPath": "images/my-select.png",
+        "pagePath": "pages/index/index"
+      }
+    ]
   }
 }
