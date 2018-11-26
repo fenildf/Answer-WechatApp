@@ -25,15 +25,17 @@ export default new Router({
             }]
         },
         {
-            path:'/user',
+            path: '/user',
             component: Layout,
             redirect: '/user/index',
-            children: [{
-                path: 'index',
-                name: 'user',
-                component: () => import('@/views/user/index'),
-                meta: { title: '用户管理', icon: 'el-icon-rank' }
-            }]
+            children: [
+                {
+                    path: 'index',
+                    name: 'user',
+                    component: () => import('@/views/user/index'),
+                    meta: {title: '用户管理', icon: 'el-icon-rank'}
+                }
+            ]
         }
     ]
 })

@@ -1,6 +1,6 @@
 <template>
     <el-menu mode="horizontal" class="navbar">
-        <hamburger class="hamburger-container"/>
+        <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
         <breadcrumb />
         <el-dropdown class="avatar-container" trigger="click">
             <div class="avatar-wrapper">
@@ -37,6 +37,10 @@
             ])
         },
         methods:{
+            toggleSideBar() {
+                console.log("toggleSideBar")
+                this.$store.dispatch('ToggleSideBar')
+            },
             logout(){
                 this.$store.dispatch('LogOut').then(()=>{
                     location.reload()

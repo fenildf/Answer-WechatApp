@@ -1,6 +1,17 @@
 //app.js
+const Bmob = require('utils/Bmob-1.6.5.min.js');
+const utils = require('utils/util.js');
+Bmob.initialize("23d5d78f821ef7e491ac740a15dc60aa", "6f6bc6712795ef34cceb5c2b62f49930");
+wx.u = utils
 App({
   onLaunch: function () {
+    Bmob.User.auth().then(res=>{
+      console.log(res)
+      console.log('一键登陆成功')
+    }).catch(err => {
+      console.log(err)
+    });
+    
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
