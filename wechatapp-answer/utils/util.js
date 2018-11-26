@@ -23,7 +23,9 @@ const getUserInfo = () => {
   return new Promise((resolve, reject) => {
     const query = wx.Bmob.Query('_User');
     query.get(uid).then(res => {
-      resolve({ 'result': res });
+      resolve({
+        'result': res
+      });
     })
   })
 }
@@ -42,7 +44,9 @@ const changeUserInfo = (avatarUrl, nickName) => {
       res.set('avatarUrl', avatarUrl);
       res.set('nickName', nickName);
       res.save();
-      resolve({ 'result': 'success' });
+      resolve({
+        'result': 'success'
+      });
     })
   })
 }
@@ -50,12 +54,30 @@ const changeUserInfo = (avatarUrl, nickName) => {
 /**
  * 获取套题
  */
-const getQuestionMenu = ()=>{
+const getQuestionMenu = () => {
   return new Promise((resolve, reject) => {
     const query = wx.Bmob.Query('questionMenu');
     query.order('-createdAt');
+    query.find().then(res => {
+      resolve({
+        'result': res
+      });
+    })
+  })
+}
+
+/**
+ * 获取题目
+ * menuId:套题id
+ */
+const getQuestions = (menuId) => {
+  return new Promise((resolve, reject) => {
+    const query = wx.Bmob.Query('questions');
+    query.equalTo('menu','==',menuId);
     query.find().then(res=>{
-      resolve({ 'result': res });
+      resolve({
+        'result':res
+      })
     })
   })
 }
@@ -64,5 +86,6 @@ module.exports = {
   formatTime: formatTime,
   getUserInfo: getUserInfo,
   changeUserInfo: changeUserInfo,
-  getQuestionMenu: getQuestionMenu
+  getQuestionMenu: getQuestionMenu,
+  getQuestions: getQuestions
 }
