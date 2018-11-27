@@ -5,7 +5,7 @@
   width: 350rpx;
   height: 350rpx;
   margin-bottom: 130rpx;
-  margin-top: 100rpx;
+  padding-top: 100rpx;
 }
 .answer{
   width:275rpx;

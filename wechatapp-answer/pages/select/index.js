@@ -52,9 +52,9 @@ Page({
       })
       return;
     }
-    console.log(this.data.objectQuestionMenu[this.data.index])
+    console.log(this.data.objectQuestionMenu[this.data.index].name)
     wx.navigateTo({
-      url: '/pages/answer/index?id=' + this.data.objectQuestionMenu[this.data.index].objectId,
+      url: '/pages/answerInfo/index?id=' + this.data.objectQuestionMenu[this.data.index].objectId + '&questionMenu=' + this.data.objectQuestionMenu[this.data.index].name,
     })
   }
 })

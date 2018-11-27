@@ -82,10 +82,25 @@ const getQuestions = (menuId) => {
   })
 }
 
+/**
+ * 获取设置
+ */
+const getSetting = ()=>{
+  return new Promise((resolve,reject)=>{
+    const query = wx.Bmob.Query('setting')
+    query.find().then(res=>{
+      resolve({
+        'result':res
+      })
+    })
+  })
+}
+
 module.exports = {
   formatTime: formatTime,
   getUserInfo: getUserInfo,
   changeUserInfo: changeUserInfo,
   getQuestionMenu: getQuestionMenu,
-  getQuestions: getQuestions
+  getQuestions: getQuestions,
+  getSetting: getSetting
 }
