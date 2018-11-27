@@ -12,6 +12,7 @@ import router from './router'
 import store from './store'
 import {bmob} from './api/bmobConfig'
 import '@/permission' // permission control
+import tablelist from './components/Tablelist/index'
 
 
 
@@ -19,6 +20,8 @@ Vue.config.productionTip = false
 
 Vue.use(ElementUI,{ locale })
 Vue.prototype.$Bmob = bmob()  //全局变量
+
+Vue.component('tablelist',tablelist)
 
 /* eslint-disable no-new */
 new Vue({

@@ -36,6 +36,19 @@ export default new Router({
                     meta: {title: '用户管理', icon: 'el-icon-rank'}
                 }
             ]
+        },
+        {
+            path: '/menu',
+            component: Layout,
+            redirect: '/menu/index',
+            children: [
+                {
+                    path: 'index',
+                    name: 'menu',
+                    component: () => import('@/views/menu/index'),
+                    meta: {title: '套题管理', icon: 'el-icon-rank'}
+                }
+            ]
         }
     ]
 })

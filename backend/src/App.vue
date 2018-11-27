@@ -14,4 +14,11 @@ export default {
   body{
     margin: 0;
   }
+  .header-search {
+     padding: 20px;
+   }
+  .pagination {
+    padding: 10px 0;
+    text-align: center;
+  }
 </style>
