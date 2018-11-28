@@ -31,8 +31,8 @@ Page({
     })
   },
   start(){
-    wx.navigateTo({
-      url: '/pages/answer/index?id'+this.data.id
+    wx.redirectTo({
+      url: '/pages/answer/index?id='+this.data.id
     })
   }
 })

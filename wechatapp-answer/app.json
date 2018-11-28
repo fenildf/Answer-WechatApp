@@ -1,8 +1,9 @@
 {
   "pages": [
-    
     "pages/select/index",
     "pages/answer/index",
+    
+    "pages/answerErr/index",
     "pages/answerInfo/index",
     "pages/logs/logs",
     "pages/index/index"
