@@ -15,13 +15,23 @@
   <!--题目-->
   <view class="question-list">
     <view class="question-list-title">
-      <i-tag class="i-tags" name="单选" type="border" color="blue" wx:if="{{type==1}}">
+      <i-tag class="i-tags" name="单选" type="border" color="blue" wx:if="{{questionInfo.type==1}}">
         单选
       </i-tag>
-      <i-tag class="i-tags" name="多选" type="border" color="blue" wx:if="{{type==2}}">
+      <i-tag class="i-tags" name="多选" type="border" color="blue" wx:if="{{questionInfo.type==2}}">
         多选
       </i-tag>
       <text class='question-title'>{{questionInfo.title}}</text>
     </view>
   </view>
+  <image wx:if="{{questionInfo.picUrl}}" style="width: 100%; height: 200px; background-color: #fff;" mode="aspectFit" src="{{questionInfo.picUrl}}"></image>
+  <!--答案选择 - 单选-->
+  <i-panel hide-border="{{ true }}" wx:if="{{questionInfo.type==1}}">
+    <i-radio-group wx:for="{{questionInfo.choseList}}" wx:key="item.id" current="{{current}}" data-id="{{item.isChose}}" bindchange="handleFruitChange">
+
+      <i-radio disabled="{{disabled}}" position="left" value="{{s[index]}}{{item.item}}">
+      </i-radio>
+    </i-radio-group>
+  </i-panel>
+
 </view>

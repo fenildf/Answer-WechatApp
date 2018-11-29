@@ -12,3 +12,13 @@
   border-radius: 5px;
   padding: 5px 6px;
 }
+.question-list{
+  padding:15px;
+}
+.question-list-title{
+  font-size: 15px;
+}
+.question-title{
+  margin-left: 8px;
+  line-height: 25px;
+}

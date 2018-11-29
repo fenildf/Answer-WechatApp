@@ -9,6 +9,7 @@ Page({
     percent:20,//进度条百分比
     time:45,//时间
     Countdown:'',//倒计时
+    s: ['A. ', 'B. ', 'C. ', 'D. ', 'E. '],
   },
 
   onLoad (e) {
@@ -45,5 +46,21 @@ Page({
       })
       return
     }
+
+    const current = r[i].choseList[0].item
+
+    const answer = [];
+    //获取正确答案
+    for(var j = 0;j<r[i].choseList.length;j++){
+      if(r[i].choseList[j].isChose){
+        answer.push(r[i].choseList[j].item);
+      }
+    }
+    console.log(answer);
+
+    this.setData({
+      questionInfo:r[i],
+      answer:answer,
+    })
   }
 })
