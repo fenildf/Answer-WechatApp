@@ -11,3 +11,8 @@ page{
 	-webkit-text-size-adjust: 100%;
 	-webkit-tap-highlight-color: transparent;
 }
+.css-shadow{
+  -moz-box-shadow:2px 2px 10px #78E4CC; 
+  -webkit-box-shadow:2px 2px 10px #78E4CC; 
+  box-shadow:2px 2px 10px #78E4CC;
+}
