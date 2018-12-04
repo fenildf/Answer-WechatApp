@@ -1,7 +1,6 @@
 // pages/answer/index.js
-import {
-  $wuxCountDown
-} from '../../wux/index'
+import { $wuxCountDown } from '../../wux/index'
+const { $Message } = require('../../dist/base/index');
 Page({
 
   data: {
@@ -23,6 +22,7 @@ Page({
     questionOk: 0,// 正确个数
     percentage: 0,
     visible1:false,
+    visible2:false,
     action1:[
       {
         name: '取消'
@@ -32,10 +32,18 @@ Page({
         color: '#2db7f5',
         loading: false
       }
+    ],
+    action2:[
+      {
+        name: '确定',
+        color: '#2db7f5',
+        loading: false
+      }
     ]
   },
 
   onLoad(e) {
+    var that = this;
     wx.u.getSetting().then(res1 => {
       var time = 0;
       for (let i in res1.result) {
@@ -56,6 +64,11 @@ Page({
           render(date) {
             const min = this.leadingZeros(date.min, 2) + ':'
             const sec = this.leadingZeros(date.sec, 2) + ''
+            //答题时间结束
+            if (date.min === 0 && date.sec === 0) {
+              console.log("时间结束")
+              that.handleClick1();
+            }
             this.setData({
               Countdown: min + sec,
             })
@@ -108,9 +121,30 @@ Page({
       var choose = this.data.currentD;
       this.data.result[this.data.index - 1].choose = [choose];
     }
+    let questionErr = this.data.questionErr  //错题个数
+    let questionOk = this.data.questionOk  //错题个数
+    let questionInfo = this.data.questionInfo
     let result = this.data.result
+    let index = this.data.index
+
+    if (questionInfo.isOk === 1) {
+
+      questionOk = questionOk + 1
+      result[index - 1].judge = 1
+
+    }else{
+      questionErr = questionErr + 1
+      result[index - 1].judge = 0
+    }
+    //计算百分比
+    let percentage = questionOk / (index) * 100
+    percentage = percentage.toFixed(2)
+
     this.setData({
-      result: result
+      result: result,
+      questionOk: questionOk,
+      questionErr: questionErr,
+      percentage: percentage
     })
   },
   //单选
@@ -169,6 +203,16 @@ Page({
     if (action === 'next') {
       const i = this.data.index;
       const type = this.data.type;
+      if (i >= r.length) {
+        this.statistical()
+        
+        $Message({
+          content: '题目已打完,请交卷',
+          duration: 3,
+          type: 'warning'
+        });
+        return;
+      }
       if (r[i].type == 1 ) {
         if (r[i].choose) {
           var choose = r[i].choose[0];
@@ -234,20 +278,38 @@ Page({
       });
     }
   },
+  //交卷处理
+  submit(){
+    wx.redirectTo({
+      url: '/pages/history/index'
+    })
+  },
   //交卷对话框
-  handleSubmit(){
+  handleSubmitOpen(){
     this.setData({
       visible1:true
     })
   },
+  //交卷按钮
   checkSubmit({ detail }){
+    //取消
     if (detail.index === 0) {
       this.setData({
         visible1: false
       });
     } else{
-      
+      //交卷
+      this.submit();
     }
+  },
+  handleSubmit(){
+    this.submit();
+  },
+  //时间到对话框
+  handleClick1(){
+    this.setData({
+      visible2: true
+    });
   },
   //弹出统计下拉层
   handleOpen(){

@@ -14,6 +14,7 @@
     "i-checkbox": "../../dist/checkbox/index",
     "i-button": "../../dist/button/index",
     "i-action-sheet": "../../dist/action-sheet/index",
-    "i-modal": "../../dist/modal/index"
+    "i-modal": "../../dist/modal/index",
+    "i-message": "../../dist/message/index"
   }
 }

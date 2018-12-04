@@ -2,7 +2,7 @@
   "pages": [
     "pages/select/index",
     "pages/answer/index",
-    
+    "pages/history/index",
     "pages/answerErr/index",
     "pages/answerInfo/index",
     "pages/logs/logs",
