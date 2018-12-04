@@ -22,30 +22,50 @@ Page({
     questionErr: 0,//错题个数
     questionOk: 0,// 正确个数
     percentage: 0,
+    visible1:false,
+    action1:[
+      {
+        name: '取消'
+      },
+      {
+        name: '确定',
+        color: '#2db7f5',
+        loading: false
+      }
+    ]
   },
 
   onLoad(e) {
-    //获取题目
-    wx.u.getQuestions(e.id).then(res => {
-      console.log(res);
-      this.setData({
-        result: res.result,
-        total: res.result.length
-      })
-      //倒计时
-      var Countdown = new $wuxCountDown({
-        date: +(new Date) + 60000 * parseInt(this.data.time),
-        render(date) {
-          const min = this.leadingZeros(date.min, 2) + ':'
-          const sec = this.leadingZeros(date.sec, 2) + ''
-          this.setData({
-            Countdown: min + sec,
-          })
+    wx.u.getSetting().then(res1 => {
+      var time = 0;
+      for (let i in res1.result) {
+        if (res1.result[i].key == 'time') {
+          time = res1.result[i].value
         }
-      })
+      }
+      //获取题目
+      wx.u.getQuestions(e.id).then(res => {
+        console.log(res);
+        this.setData({
+          result: res.result,
+          total: res.result.length
+        })
+        //倒计时
+        var Countdown = new $wuxCountDown({
+          date: +(new Date) + 60000 * parseInt(time),
+          render(date) {
+            const min = this.leadingZeros(date.min, 2) + ':'
+            const sec = this.leadingZeros(date.sec, 2) + ''
+            this.setData({
+              Countdown: min + sec,
+            })
+          }
+        })
 
-      this.setThisData(0)
-    })
+        this.setThisData(0)
+      })
+    });
+    
   },
   //设置当前题目
   setThisData(i) {
@@ -141,9 +161,7 @@ Page({
 
   },
   //翻页
-  handlePageChange({
-    detail
-  }) {
+  handlePageChange({ detail }) {
     const action = detail.type;
     const r = this.data.result;
 
@@ -214,6 +232,21 @@ Page({
         disabled: true,
         disabled1:true
       });
+    }
+  },
+  //交卷对话框
+  handleSubmit(){
+    this.setData({
+      visible1:true
+    })
+  },
+  checkSubmit({ detail }){
+    if (detail.index === 0) {
+      this.setData({
+        visible1: false
+      });
+    } else{
+      
     }
   },
   //弹出统计下拉层

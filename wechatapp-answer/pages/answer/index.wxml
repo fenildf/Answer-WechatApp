@@ -8,7 +8,7 @@
       </i-col>
 
       <i-col span="14" i-class="col-class-sub" bindtap="handleOpen1">
-        <text class="submit">交卷</text>
+        <text class="submit" bindtap='handleSubmit'>交卷</text>
       </i-col>
     </i-row>
   </view>
@@ -117,5 +117,10 @@
       </view>
     </i-action-sheet>
     <!--下拉弹出-->
+
+    <!--交卷对话框-->
+    <i-modal visible="{{ visible1 }}" actions="{{ action1 }}" bind:click="checkSubmit">
+      <view>确认交卷？</view>
+    </i-modal>
   </view>
 </view>

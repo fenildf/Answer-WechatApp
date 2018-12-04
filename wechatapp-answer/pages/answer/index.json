@@ -13,6 +13,7 @@
     "i-checkbox-group": "../../dist/checkbox-group/index",
     "i-checkbox": "../../dist/checkbox/index",
     "i-button": "../../dist/button/index",
-    "i-action-sheet": "../../dist/action-sheet/index"
+    "i-action-sheet": "../../dist/action-sheet/index",
+    "i-modal": "../../dist/modal/index"
   }
 }
