@@ -49,6 +49,19 @@ export default new Router({
                     meta: {title: '套题管理', icon: 'el-icon-rank'}
                 }
             ]
+        },
+        {
+            path: '/question',
+            component:Layout,
+            redirect:'/question/index',
+            children:[
+                {
+                    path:'index',
+                    name:'question',
+                    component:()=> import('@/views/question/index'),
+                    meta:{title:'题目管理',icon:'el-icon-rank'}
+                }
+            ]
         }
     ]
 })

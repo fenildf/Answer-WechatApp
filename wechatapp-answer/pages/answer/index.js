@@ -207,7 +207,7 @@ Page({
         this.statistical()
         
         $Message({
-          content: '题目已打完,请交卷',
+          content: '题目已答完,请交卷',
           duration: 3,
           type: 'warning'
         });
