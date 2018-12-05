@@ -7,6 +7,7 @@ Page({
     loading: true, //加载中
     result: {}, //题目
     total: 0, //题目总总数
+    menu:'',//套题id
     percent: 20, //进度条百分比
     time: 45, //时间
     Countdown: '', //倒计时
@@ -53,10 +54,13 @@ Page({
       }
       //获取题目
       wx.u.getQuestions(e.id).then(res => {
-        console.log(res);
+        console.log(res.result);
         this.setData({
+          loading:false,
           result: res.result,
-          total: res.result.length
+          total: res.result.length,
+          menu:e.id,
+          questionMenu: e.questionMenu
         })
         //倒计时
         var Countdown = new $wuxCountDown({
@@ -198,6 +202,7 @@ Page({
   handlePageChange({ detail }) {
     const action = detail.type;
     const r = this.data.result;
+    console.log(r);
 
     //上下一题
     if (action === 'next') {
@@ -280,8 +285,25 @@ Page({
   },
   //交卷处理
   submit(){
-    wx.redirectTo({
-      url: '/pages/history/index'
+    this.setData({
+      loading:true,
+      visible1:false
+    })
+    var result = this.data.result
+    var score = this.data.questionOk
+    var menu = this.data.menu
+    var questionMenu = this.data.questionMenu
+    wx.u.addHistory(menu, score, result, questionMenu).then(res=>{
+      console.log(res);
+      this.setData({
+        loading: false,
+
+      })
+      if(res.result === true){
+        wx.reLaunch({
+          url: '../history/index'
+        })
+      }  
     })
   },
   //交卷对话框

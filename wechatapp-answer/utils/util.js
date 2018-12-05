@@ -96,11 +96,49 @@ const getSetting = ()=>{
   })
 }
 
+/**
+ * 添加测试记录
+ * menu:套题id
+ * score:分数
+ * questionList:问题集合
+ */
+const addHistory = (menu, score, questionList, questionMenu)=>{
+  return new Promise((resolve, reject) => {
+    const query = wx.Bmob.Query('history')
+    query.equalTo('menu','==',menu)
+    query.find().then(res=>{
+      if(res.length>0){
+        query.get(res[0].objectId).then(res1=>{
+          res1.set('score',score)
+          res1.set('questionList',questionList)
+          res1.save().then(res2=>{
+            resolve({ 'result': true })
+          })
+        })
+      }else{
+        let current = wx.Bmob.User.current();
+        let uid = current.objectId;
+        const pointer = wx.Bmob.Pointer('_User')
+        const poiID = pointer.set(uid)
+        query.set('user',poiID)
+        query.set('score',score)
+        query.set('menu',menu)
+        query.set('questionMenu', questionMenu)
+        query.set('questionList',questionList)
+        query.save().then(res2=>{
+          resolve({'result':true})
+        })
+      }
+    })
+  })
+}
+
 module.exports = {
   formatTime: formatTime,
   getUserInfo: getUserInfo,
   changeUserInfo: changeUserInfo,
   getQuestionMenu: getQuestionMenu,
   getQuestions: getQuestions,
-  getSetting: getSetting
+  getSetting: getSetting,
+  addHistory: addHistory
 }

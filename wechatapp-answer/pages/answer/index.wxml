@@ -1,6 +1,6 @@
 <!--pages/answer/index.wxml-->
 <view class='page'>
-  <i-spin fix size="large" wx:if="{{!loading}}"></i-spin>
+  <i-spin fix size="large" wx:if="{{loading}}"></i-spin>
   <view class="header-model2 css-shadow-bottom">
     <i-row>
       <i-col span="10" i-class="col-class-down">

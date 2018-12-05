@@ -32,7 +32,7 @@ Page({
   },
   start(){
     wx.redirectTo({
-      url: '/pages/answer/index?id='+this.data.id
+      url: '/pages/answer/index?id=' + this.data.id + '&questionMenu=' + this.data.questionMenu
     })
   }
 })

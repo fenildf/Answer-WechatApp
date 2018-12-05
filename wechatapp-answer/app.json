@@ -5,6 +5,7 @@
     "pages/history/index",
     "pages/answerErr/index",
     "pages/answerInfo/index",
+    "pages/result/index",
     "pages/logs/logs",
     "pages/index/index"
     
