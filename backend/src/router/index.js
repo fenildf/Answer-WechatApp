@@ -62,6 +62,19 @@ export default new Router({
                     meta:{title:'题目管理',icon:'el-icon-rank'}
                 }
             ]
+        },
+        {
+            path:'/import',
+            component:Layout,
+            redirect:'/import/index',
+            children:[
+                {
+                    path:'index',
+                    name:'import',
+                    component:()=>import('@/views/import/index'),
+                    meta:{title:'题目导入',icon:'el-icon-rank'}
+                }
+            ]
         }
     ]
 })

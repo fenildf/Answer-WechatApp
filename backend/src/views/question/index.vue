@@ -31,12 +31,12 @@
             <el-form ref="ruleForm" :model="form" :rules="rules" label-width="80px">
                 <el-row>
                     <el-form-item label="题目" prop="title">
-                        <el-input size="small" type="textarea"></el-input>
+                        <el-input v-model="form.title" size="small" type="textarea"></el-input>
                     </el-form-item>
                 </el-row>
                 <el-row>
                     <el-form-item label="所属套题" prop="menu">
-                        <el-select v-model="form.menu" placeholder="请选择" size="small">
+                        <el-select v-model="form.menu" placeholder="请选择" size="small" filterable>
                             <el-option
                                     v-for="item in menu1"
                                     :key="item.value"
@@ -54,7 +54,7 @@
                             class="avatar-uploader"
                         >
                             <i v-if="imgLoading" class="avatar-uploader-icon el-icon-loading"/>
-                            <img v-else-if="form.pic" :src="form.pic" class="avatar">
+                            <img v-else-if="form.picUrl" :src="form.picUrl" class="avatar">
                             <i v-else class="el-icon-plus
                             avatar-uploader-icon"/>
                         </el-upload>
@@ -94,13 +94,42 @@
                 </el-row>
                 <el-row>
                     <el-form-item label="帮助描述" prop="help">
-                        <el-input size="small" type="textarea"></el-input>
+                        <el-input v-model="form.help" size="small" type="textarea"></el-input>
                     </el-form-item>
                 </el-row>
             </el-form>
             <div style="margin-left: 80px;margin-top: 30px;">
-                <el-button @click="dialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="handleSubmit('ruleForm')">确 定</el-button>
+                <el-button @click="dialogVisible = false">取 消</el-button>
+            </div>
+        </el-dialog>
+
+        <!--edit querstion dialog-->
+        <el-dialog title="修改题目" :visible.sync="editDialogVisible" width="40%">
+            <el-form ref="editform" :model="form" :rules="editRule" label-width="80px">
+                <el-form-item label="题目" prop="title">
+                    <el-input v-model="form.title" size="small" type="textarea"></el-input>
+                </el-form-item>
+                <el-form-item label="图片" prop="picUrl">
+                    <el-upload
+                            :http-request="ImgReq"
+                            :on-change="handleChange"
+                            :show-file-list="false"
+                            class="avatar-uploader"
+                            action="https://api2.bmob.cn/2/files/">
+                        <i v-if="imgLoading" class="avatar-uploader-icon el-icon-loading"/>
+                        <img v-else-if="form.picUrl" :src="form.picUrl" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"/>
+                    </el-upload>
+                </el-form-item>
+                <el-form-item label="帮助描述" prop="help">
+                    <el-input v-model="form.help" size="small" type="textarea"></el-input>
+                </el-form-item>
+
+            </el-form>
+            <div style="margin-left: 80px;margin-top: 30px;">
+                <el-button type="primary" @click="handleEditSubmit('editform')">确 定</el-button>
+                <el-button @click="editDialogVisible = false">取 消</el-button>
             </div>
         </el-dialog>
     </div>
@@ -117,6 +146,7 @@
                 }
             }
             var validateArr = (rule,value,callback)=>{
+                var isNull = false
                 for(var v of value){
                     if (v.value === '') {
                         isNull = true
@@ -126,7 +156,7 @@
                     callback(new Error('题目选项不可为空'))
                 } else if (value.length <= 1) {
                     callback(new Error('题目选项不可只有1项'))
-                } else if (this.form.questionOptions.length === 0) {
+                } else if (this.form.choseList.length === 0) {
                     callback(new Error('请勾选题目正确选项'))
                 } else {
                     callback()
@@ -137,6 +167,7 @@
                 value1:'',
                 loading:false,
                 dialogVisible:false,
+                editDialogVisible:false,
                 imgLoading:false,
                 file:'',
                 menu:[
@@ -214,9 +245,37 @@
                     title:{ validator:validateNull,trigger:'change'},
                     menu:{ validator:validateNull,trigger:'change' },
                     type:{ validator:validateNull,trigger:'change' },
-                    help:{ validator:validateNull,trigger:'change' },
                     checkitems:{ validator: validateArr,trigger:'change'}
                 },
+                editRule:{
+                    title:{ validator:validateNull,trigger:'change'},
+                    menu:{ validator:validateNull,trigger:'change' },
+                    type:{ validator:validateNull,trigger:'change' },
+                }
+            }
+        },
+        watch:{
+            dialogVisible:function () {
+                if(!this.dialogVisible){
+                    if(this.form.picUrl){
+                        this.form.picUrl = ''
+                    }
+                    this.$refs['ruleForm'].resetFields();
+                }
+            },
+            editDialogVisible:function () {
+                if(!this.editDialogVisible) {
+                    this.form.title=''
+                    this.form.type=''
+                    this.form.help=''
+                    this.form.menu=''
+                    if(this.form.picUrl){
+                        this.form.picUrl = ''
+                    }
+                    if (this.$refs['ruleForm']) {
+                        this.$refs['ruleForm'].resetFields();
+                    }
+                }
             }
         },
         mounted(){
@@ -286,9 +345,9 @@
             handlecontrol(params){
                 console.log(params)
                 if(params.item.type === 'delete'){
-                    this.delete(params.scope)
+                    this.questionDel(params.scope)
                 }else if(params.item.type === 'edit'){
-                    this.handlesort(params.scope)
+                    this.handleEdit(params.scope)
                 }
             },
             ImgReq(req){
@@ -306,7 +365,7 @@
                 var file = this.$Bmob.File(this.file.name, this.file.raw)
                 file.save().then(res => {
                     const fileRes = res[0]
-                    this.form.pic = fileRes.url
+                    this.form.picUrl= fileRes.url
                     this.imgLoading = false
                 })
 
@@ -328,11 +387,108 @@
             handleSubmit(formName){
                 this.$refs[formName].validate((valid)=>{
                     if(valid){
-
+                        //保存题目
+                        console.log(this.returnParams())
+                        this.loading = true
+                        var params = this.returnParams()
+                        var query = this.$Bmob.Query('questions')
+                        for(var p in params){
+                            query.set(p,params[p])
+                        }
+                        query.save().then(res =>{
+                            if(res.objectId){
+                                this.dialogVisible = false
+                                this.getQuestions()
+                                this.$message.success('新增成功')
+                            }
+                        })
                     }else{
                         return false
                     }
                 })
+            },
+            handleEditSubmit(formName){
+                this.$refs[formName].validate((valid)=>{
+                    this.loading = true
+                    var query = this.$Bmob.Query('questions')
+                    console.log(this.form)
+                    query.set('id',this.form.objectId)
+                    query.set('title',this.form.title)
+                    if(this.form.picUrl){
+                        query.set('picUrl',this.form.picUrl)
+                    }
+                    if(this.form.help){
+                        query.set('help',this.form.help)
+                    }
+                    query.save().then(res => {
+                        this.$message.success('编辑成功')
+                        this.editDialogVisible = false
+                        this.getQuestions()
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                })
+            },
+            questionDel(scope){
+                this.$confirm('确定删除？','提示',{
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(()=>{
+                    this.loading = true
+                    var query = this.$Bmob.Query('questions')
+                    query.destroy(scope.row.objectId).then(res=>{
+                        if(res.msg == 'ok'){
+                            this.getQuestions()
+                            this.$message.success('操作成功')
+                        }
+                    })
+                }).catch(()=>{
+                    this.loading = false
+                    this.$message({
+                        type:'info',
+                        message: '已取消删除'
+                    })
+                })
+
+            },
+            handleEdit(scope){
+                this.editDialogVisible = true
+                this.form.objectId = scope.row.objectId
+                this.form.title = scope.row.title
+                this.form.type = scope.row.type
+                this.form.picUrl = scope.row.picUrl
+                this.form.help = scope.row.help
+                this.form.menu = scope.row.menu
+                console.log(this.form)
+            },
+            returnParams(){
+                console.log(this.form.checkitems)
+                console.log(this.form.choseList)
+                var itemArr = []
+                for(var c of this.form.checkitems){
+                    itemArr.push({
+                        item:c.item
+                    })
+                }
+                for(var q of this.form.choseList){
+                    itemArr[q].isChose = true
+                }
+
+                var params = {
+                    title:this.form.title,
+                    menu:this.form.menu,
+                    type:this.form.type,
+                    choseList:itemArr,
+                }
+                if(this.form.picUrl){
+                    params.picUrl = this.form.picUrl
+                }
+                if(this.form.help){
+                    params.help = this.form.help
+                }
+
+                return params
             }
         }
     }
