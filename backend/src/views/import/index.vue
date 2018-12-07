@@ -109,6 +109,9 @@
                     if (d['帮助描述']) {
                         d.help = d['帮助描述']
                     }
+                    if(d['图片链接']){
+                        d.picUrl = d['图片链接']
+                    }
                     d.choseList = []
                     for(let key in d){
                         if (key === '题型') {
@@ -144,7 +147,8 @@
                         title: d.title,
                         help: d.help ? d.help : '',
                         type: d.type,
-                        choseList: d.choseList
+                        choseList: d.choseList,
+                        picUrl: d.picUrl ? d.picUrl : '',
                     })
                 }
                 this.batchQuestions(this.questions)

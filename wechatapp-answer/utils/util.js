@@ -57,7 +57,7 @@ const changeUserInfo = (avatarUrl, nickName) => {
 const getQuestionMenu = () => {
   return new Promise((resolve, reject) => {
     const query = wx.Bmob.Query('questionMenu');
-    query.order('-createdAt');
+    query.order('createdAt');
     query.find().then(res => {
       resolve({
         'result': res

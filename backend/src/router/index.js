@@ -21,7 +21,7 @@ export default new Router({
                 path: 'dashboard',
                 name: 'dashboard',
                 component: () => import('@/views/dashboard/index'),
-                meta: {title: '后台首页', icon: 'el-icon-setting'}
+                meta: {title: '后台首页', icon: 'el-icon-news'}
             }]
         },
         {
@@ -46,7 +46,7 @@ export default new Router({
                     path: 'index',
                     name: 'menu',
                     component: () => import('@/views/menu/index'),
-                    meta: {title: '套题管理', icon: 'el-icon-rank'}
+                    meta: {title: '套题管理', icon: 'el-icon-menu'}
                 }
             ]
         },
@@ -59,7 +59,7 @@ export default new Router({
                     path:'index',
                     name:'question',
                     component:()=> import('@/views/question/index'),
-                    meta:{title:'题目管理',icon:'el-icon-rank'}
+                    meta:{title:'题目管理',icon:'el-icon-tickets'}
                 }
             ]
         },
@@ -71,8 +71,21 @@ export default new Router({
                 {
                     path:'index',
                     name:'import',
-                    component:()=>import('@/views/import/index'),
-                    meta:{title:'题目导入',icon:'el-icon-rank'}
+                    component:()=> import('@/views/import/index'),
+                    meta:{title:'题目导入',icon:'el-icon-upload'}
+                }
+            ]
+        },
+        {
+            path:'/setting',
+            component:Layout,
+            redirect:'/setting/index',
+            children:[
+                {
+                    path:'index',
+                    name:'setting',
+                    component:()=>import('@/views/setting/index'),
+                    meta:{title:'设置',icon:'el-icon-setting'}
                 }
             ]
         }
