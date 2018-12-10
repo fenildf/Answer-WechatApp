@@ -105,19 +105,21 @@ const getSetting = ()=>{
 const addHistory = (menu, score, questionList, questionMenu)=>{
   return new Promise((resolve, reject) => {
     const query = wx.Bmob.Query('history')
+    let current = wx.Bmob.User.current();
+    let uid = current.objectId;
     query.equalTo('menu','==',menu)
+    query.equalTo('user','==',uid)
     query.find().then(res=>{
       if(res.length>0){
         query.get(res[0].objectId).then(res1=>{
           res1.set('score',score)
           res1.set('questionList',questionList)
           res1.save().then(res2=>{
-            resolve({ 'result': true })
+            console.log(res2)
+            resolve({ 'result': res[0].objectId })
           })
         })
       }else{
-        let current = wx.Bmob.User.current();
-        let uid = current.objectId;
         const pointer = wx.Bmob.Pointer('_User')
         const poiID = pointer.set(uid)
         query.set('user',poiID)
@@ -126,9 +128,53 @@ const addHistory = (menu, score, questionList, questionMenu)=>{
         query.set('questionMenu', questionMenu)
         query.set('questionList',questionList)
         query.save().then(res2=>{
-          resolve({'result':true})
+          console.log(res2)
+          resolve({ 'result': res2.objectId})
         })
       }
+    })
+  })
+}
+
+/**
+ * 查询测试历史
+ * id:objectId
+ */
+const getHistory = (id)=>{
+  return new Promise((resolve, reject) => {
+    const query = wx.Bmob.Query('history')
+    query.get(id).then(res=>{
+      resolve({ 'result': res })
+    })
+  })
+}
+
+/**
+ * 查询击败人数
+ * menu:所属套题
+ * score:分数
+ */
+const getBeatNum =(menu,score)=>{
+  return new Promise((resolve,reject)=>{
+    const query = wx.Bmob.Query('history')
+    query.equalTo('menu','==',menu)
+    query.equalTo('score', '<', score)
+    query.count().then(res => {
+      resolve({ 'result': res })
+    });
+  })
+}
+
+/**
+ * 查询平均分
+ * menu：所属套题
+ */
+const getAverage =(menu)=>{
+  return new Promise((resolve,reject)=>{
+    const query = wx.Bmob.Query('statistics');
+    query.equalTo('menu','==',menu)
+    query.find().then(res=>{
+      resolve({'result':res})
     })
   })
 }
@@ -140,5 +186,8 @@ module.exports = {
   getQuestionMenu: getQuestionMenu,
   getQuestions: getQuestions,
   getSetting: getSetting,
-  addHistory: addHistory
+  addHistory: addHistory,
+  getHistory: getHistory,
+  getBeatNum: getBeatNum,
+  getAverage: getAverage
 }

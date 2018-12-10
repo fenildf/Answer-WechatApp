@@ -5,62 +5,38 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    loading:true,
+    total:0,
+    score:0,
+    average:0
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-
+  onLoad (options) {
+    var objectId = options.id
+    wx.u.getHistory(objectId).then(res=>{
+      wx.u.getBeatNum(res.result.menu, res.result.score).then(res1=>{
+        wx.u.getAverage(res.result.menu).then(res2 => {
+          this.setData({
+            objectId:objectId,
+            loading: false,
+            total: res.result.questionList.length,
+            score: res.result.score,
+            questions: res.result.questionList,
+            beatNum: res1.result,
+            average: parseInt(res2.result[0].allScore / res2.result[0].peopleNum)
+          })
+        })
+      }) 
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  back(){
+    wx.reLaunch({
+      url: '/pages/select/index',
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  analysis(){
+    wx.navigateTo({
+      url: '/pages/analysis/index?objectId='+ this.data.objectId,
+    })
   }
 })

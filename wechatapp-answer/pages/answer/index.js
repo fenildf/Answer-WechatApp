@@ -8,7 +8,7 @@ Page({
     result: {}, //题目
     total: 0, //题目总总数
     menu:'',//套题id
-    percent: 20, //进度条百分比
+    percent: 0, //进度条百分比
     time: 45, //时间
     Countdown: '', //倒计时
     s: ['A. ', 'B. ', 'C. ', 'D. ', 'E. '],
@@ -144,11 +144,17 @@ Page({
     let percentage = questionOk / (index) * 100
     percentage = percentage.toFixed(2)
 
+    //进度条
+    let percent = this.data.index / this.data.total
+    percent = (percent * 100).toFixed(2);
+    percent = percent < 1 ? 1 : percent
+
     this.setData({
       result: result,
       questionOk: questionOk,
       questionErr: questionErr,
-      percentage: percentage
+      percentage: percentage,
+      percent: percent
     })
   },
   //单选
@@ -299,9 +305,9 @@ Page({
         loading: false,
 
       })
-      if(res.result === true){
+      if(res.result){
         wx.reLaunch({
-          url: '../history/index'
+          url: '../history/index?id='+res.result
         })
       }  
     })

@@ -1,0 +1,9 @@
+/* pages/analysis/index.wxss */
+.header-model2 {
+  padding: 12px 8px;
+  position: relative;
+  background: #fff;
+}
+.model2-timepiece {
+  padding: 5px 6px;
+}
