@@ -182,16 +182,24 @@ Page({
     const index = this.data.currentD.indexOf(detail.value);
     index === -1 ? this.data.currentD.push(detail.value) : this.data.currentD.splice(index, 1);
     console.log(this.data.currentD)
-    
+    this.setData({
+      currentD: this.data.currentD,
+    });
     var answer = this.data.answer;
     var currentD = this.data.currentD;
     var rightNum = 0;
     for (var i = 0; i < currentD.length; i++) {
-      var indexOf = answer.indexOf(currentD[i]);
+      var indexs = currentD[i].indexOf(" ");
+      console.log(indexs)
+      var indexOf = answer.indexOf(currentD[i].substring(indexs + 1));
+      console.log(indexOf)
       if(indexOf >= 0){
         rightNum += 1;
       }
     }
+    console.log(answer)
+    console.log(rightNum)
+    console.log(currentD)
     //判断答案
     if(rightNum == answer.length){
       questionInfo.isOk = 1
@@ -199,7 +207,6 @@ Page({
       questionInfo.isOk = 0
     }
     this.setData({
-      currentD: this.data.currentD,
       questionInfo : questionInfo
     })
 

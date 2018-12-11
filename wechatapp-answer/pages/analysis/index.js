@@ -5,8 +5,11 @@ Page({
    * 页面的初始数据
    */
   data: {
+    s: ['A. ', 'B. ', 'C. ', 'D. ', 'E. '],
+    questionInfo:{},
     loading: true,
-    result:{}
+    result:{},
+    disabled:true
   },
 
   onLoad (options) {
@@ -17,6 +20,16 @@ Page({
         loading:false,
         result:res.result
       })
+      this.setThisData(0)
+    })   
+  },
+  setThisData(i){
+    const r = this.data.result.questionList
+    console.log(r)
+    this.setData({
+      questionInfo: r[i],
+      current:r[i].choose,
+      currentD:r[i].choose[0]
     })
   }
 })
