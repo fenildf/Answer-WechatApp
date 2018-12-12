@@ -25,11 +25,20 @@ Page({
   },
   setThisData(i){
     const r = this.data.result.questionList
+    const answer = []
     console.log(r)
+    for(var j=0;j<r[i].choseList.length;j++){
+
+      if(r[i].choseList[j].isChose){
+        answer.push(this.data.s[j] + r[i].choseList[j].item)
+      }
+    }
+    console.log(answer)
     this.setData({
       questionInfo: r[i],
       current:r[i].choose,
-      currentD:r[i].choose[0]
+      currentD:r[i].choose[0],
+      answer:answer
     })
   }
 })
