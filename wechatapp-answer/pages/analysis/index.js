@@ -9,7 +9,9 @@ Page({
     questionInfo:{},
     loading: true,
     result:{},
-    disabled:true
+    disabled:true,
+    index:0,
+    chose:[]
   },
 
   onLoad (options) {
@@ -20,25 +22,46 @@ Page({
         loading:false,
         result:res.result
       })
-      this.setThisData(0)
+      this.setThisData(this.data.index)
     })   
   },
   setThisData(i){
+    console.log(i)
     const r = this.data.result.questionList
     const answer = []
+    var current = "";
+    var currentD = [];
     console.log(r)
     for(var j=0;j<r[i].choseList.length;j++){
-
+      
       if(r[i].choseList[j].isChose){
         answer.push(this.data.s[j] + r[i].choseList[j].item)
       }
     }
-    console.log(answer)
     this.setData({
+      current: current,
+      currentD: currentD,
       questionInfo: r[i],
-      current:r[i].choose,
-      currentD:r[i].choose[0],
-      answer:answer
+      answer: answer,
+      total: r.length
     })
+    console.log(this.data.current)
+  },
+  handlePageChange({ detail }){
+    const action = detail.type;
+    const r = this.data.result.questionList
+    
+    
+    if (action === 'next') {
+      this.setThisData((this.data.index +1));
+      this.setData({
+        index: (this.data.index + 1),
+      })
+    } else {
+      this.setThisData((this.data.index - 1));
+      this.setData({
+        index: (this.data.index - 1),
+      })
+    }
   }
 })
