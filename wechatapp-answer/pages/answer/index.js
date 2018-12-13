@@ -40,7 +40,8 @@ Page({
         color: '#2db7f5',
         loading: false
       }
-    ]
+    ],
+
   },
 
   onLoad(e) {
@@ -115,6 +116,9 @@ Page({
   },
   //统计答题
   statistical() {
+    if ((this.data.questionErr + this.data.questionOk) == this.data.result.length){
+      return
+    }
     //记录选择的答案
     if (this.data.type == 1) {
       //单选
@@ -221,7 +225,7 @@ Page({
     if (action === 'next') {
       const i = this.data.index;
       const type = this.data.type;
-      if (i >= r.length) {
+      if (i == r.length) {
         this.statistical()
         
         $Message({
@@ -310,13 +314,22 @@ Page({
       console.log(res);
       this.setData({
         loading: false,
-
       })
       if(res.result){
         wx.reLaunch({
           url: '../history/index?id='+res.result
         })
       }  
+    })
+    var err = [];
+    for(let object of result){
+      if(object.judge ==0 || object.judge == undefined){
+        err.push(object)
+      }
+    }
+    //添加错题
+    wx.u.addError(menu, err, questionMenu).then(res=>{
+
     })
   },
   //交卷对话框

@@ -179,6 +179,68 @@ const getAverage =(menu)=>{
   })
 }
 
+/**
+ * 添加错题集
+ * menu:套题id
+ * questionList:问题集合
+ * questionMenu:套题名
+ */
+const addError = (menu, questionList, questionMenu)=>{
+  return new Promise((resolve,reject)=>{
+    const query = wx.Bmob.Query('error')
+    let current = wx.Bmob.User.current();
+    let uid = current.objectId;
+    query.equalTo('menu', '==', menu)
+    query.equalTo('user', '==', uid)
+    query.find().then(res => {
+      if(res.length>0){
+        query.get(res[0].objectId).then(res1 => {
+          res1.set('questionList', questionList)
+          res1.save().then(res2 => {
+            console.log(res2)
+            resolve({ 'result': res[0].objectId })
+          })
+        })
+      }else{
+        const pointer = wx.Bmob.Pointer('_User')
+        const poiID = pointer.set(uid)
+        query.set('user', poiID)
+        query.set('menu', menu)
+        query.set('questionMenu', questionMenu)
+        query.set('questionList', questionList)
+        query.save().then(res2 => {
+          console.log(res2)
+          resolve({ 'result': res2.objectId })
+        })
+      }
+    })
+  })
+}
+
+/**
+ * 查询错题集
+ * menu:套题id
+ */
+const getError = (menu)=>{
+  return new Promise((resolve,reject)=>{
+    let current = wx.Bmob.User.current();
+    let uid = current.objectId;
+    const query = wx.Bmob.Query('error')
+    query.equalTo('user','==',uid)
+    query.equalTo('menu','==',menu)
+    query.find().then(res=>{
+      if(res.length>0){
+        resolve({ 
+          'result': true,
+          'error':res
+        })
+      }else{
+        resolve({ 'result': false })
+      }
+    })
+  })
+}
+
 module.exports = {
   formatTime: formatTime,
   getUserInfo: getUserInfo,
@@ -189,5 +251,7 @@ module.exports = {
   addHistory: addHistory,
   getHistory: getHistory,
   getBeatNum: getBeatNum,
-  getAverage: getAverage
+  getAverage: getAverage,
+  addError: addError,
+  getError: getError
 }

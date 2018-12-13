@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/wrong/index",
     "pages/select/index",
     "pages/answer/index",
     "pages/history/index",
@@ -8,7 +9,9 @@
     "pages/result/index",
     "pages/logs/logs",
     "pages/index/index",
-    "pages/analysis/index"
+    "pages/analysis/index",
+    
+    "pages/wrongAnswer/index"
     
   ],
   "window": {
@@ -31,7 +34,7 @@
         "text": "错题",
         "iconPath": "images/wrong.png",
         "selectedIconPath": "images/wrong-select.png",
-        "pagePath": "pages/select/index"
+        "pagePath": "pages/wrong/index"
       },
       {
         "text": "排名",
