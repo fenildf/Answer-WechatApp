@@ -10,6 +10,7 @@ Page({
     loading: true,
     result:{},
     disabled:true,
+    actionVisible:false,
     index:0,
     chose:[]
   },
@@ -18,9 +19,16 @@ Page({
     var objectId = options.objectId
     wx.u.getHistory(objectId).then(res => {
       console.log(res)
+      var right = res.result.score
+      var wrong = res.result.questionList.length - right
+      var persent = parseFloat(right/res.result.questionList.length * 100).toFixed(2)
+      console.log(persent)
       this.setData({
         loading:false,
-        result:res.result
+        result:res.result,
+        right: right,
+        wrong: wrong,
+        persent: persent
       })
       this.setThisData(this.data.index)
     })   
@@ -33,7 +41,6 @@ Page({
     var currentD = [];
     console.log(r)
     for(var j=0;j<r[i].choseList.length;j++){
-      
       if(r[i].choseList[j].isChose){
         answer.push(this.data.s[j] + r[i].choseList[j].item)
       }
@@ -53,6 +60,10 @@ Page({
     
     
     if (action === 'next') {
+      if(this.data.index >= (r.length-1)){
+        console.log(this.data.index)
+        return;
+      }
       this.setThisData((this.data.index +1));
       this.setData({
         index: (this.data.index + 1),
@@ -63,5 +74,26 @@ Page({
         index: (this.data.index - 1),
       })
     }
+  },
+  //弹出统计下拉层
+  handleOpen() {
+    this.setData({
+      actionVisible: true
+    })
+  },
+  //关闭统计下拉层
+  actionCancel() {
+    this.setData({
+      actionVisible: false
+    })
+  },
+  dump(e){
+    console.log(e)
+    var index = e.currentTarget.dataset.index
+    this.setThisData(index)
+    this.setData({
+      index:index,
+      actionVisible: false
+    })
   }
 })

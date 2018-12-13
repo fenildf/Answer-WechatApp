@@ -10,6 +10,7 @@
     "i-page": "../../dist/page/index",
     "i-checkbox-group": "../../dist/checkbox-group/index",
     "i-checkbox": "../../dist/checkbox/index",
-    "i-icon": "../../dist/icon/index"
+    "i-icon": "../../dist/icon/index",
+    "i-action-sheet": "../../dist/action-sheet/index"
   }
 }
