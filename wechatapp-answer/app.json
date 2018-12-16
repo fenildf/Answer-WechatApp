@@ -1,6 +1,6 @@
 {
   "pages": [
-    "pages/wrong/index",
+    "pages/index/index",
     "pages/select/index",
     "pages/answer/index",
     "pages/history/index",
@@ -8,11 +8,13 @@
     "pages/answerInfo/index",
     "pages/result/index",
     "pages/logs/logs",
-    "pages/index/index",
     "pages/analysis/index",
-    
-    "pages/wrongAnswer/index"
-    
+    "pages/wrong/index",
+    "pages/wrongAnswer/index",
+    "pages/rank/index",
+    "pages/rankList/index",
+    "pages/my/index",
+    "pages/historyList/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -40,13 +42,13 @@
         "text": "排名",
         "iconPath": "images/sort.png",
         "selectedIconPath": "images/sort-select.png",
-        "pagePath": "pages/select/index"
+        "pagePath": "pages/rank/index"
       },
       {
         "text": "我的",
         "iconPath": "images/my.png",
         "selectedIconPath": "images/my-select.png",
-        "pagePath": "pages/select/index"
+        "pagePath": "pages/my/index"
       }
     ]
   }

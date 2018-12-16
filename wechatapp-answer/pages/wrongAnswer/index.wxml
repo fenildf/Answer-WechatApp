@@ -35,8 +35,11 @@
           <view wx:for="{{questionInfo.choseList}}" wx:key="chose" wx:if="{{item.isChose}}">{{s[index]}}{{item.item}}</view>
         </view>
         <view class='answerTitle'>解析：</view>
-        <view class='answerContent'>
+        <view wx:if="{{questionInfo.help !=''}}" class='answerContent'>
           {{questionInfo.help}}
+        </view>
+        <view wx:else class='answerContent'>
+          无
         </view>
       </view>
     </i-panel>
@@ -44,7 +47,7 @@
     <!--底部栏-->
     <view class='css-shadow tab-bar'>
       <!-- 分页 -->
-      <i-page current="{{ index }}" total="total" bind:change="handlePageChange">
+      <i-page current="{{ index+1 }}" total="total" bind:change="handlePageChange">
         <view slot="prev">
           <i-icon type="return"></i-icon>
           上一题
@@ -56,7 +59,7 @@
                 <button class="footer-defbtn" bindtap='handleOpen'>
                   <i-icon type="task" size='25' color="#3D971C" class='footer-btn-text' />
                   <view class='footer-btn-text'>
-                    <text>{{index}}/{{total}}</text>
+                    <text>{{index+1}}/{{total}}</text>
                   </view>
                 </button>
               </view>
@@ -71,5 +74,40 @@
         </view>
       </i-page>
     </view>
+    <!--下拉弹出-->
+    <i-action-sheet visible="{{ actionVisible }}" actions="" bind:cancel="actionCancel" bind:click="actionClickItem">
+      <view slot="header" style="padding:2px">
+        <view class="i-action-header">
+          <i-row>
+            <i-col span="20" i-class="col-class">
+              <view class="i-action-header-left">
+                <button style="padding:0px;" bindtap="deleteError" size="small">移除该题</button>
+              </view>
+            </i-col>
+            <i-col span="4" i-class="col-class">
+              <view class="i-action-header-r">
+
+                <button style="padding:0px;" bindtap="actionCancel" size="small">关闭</button>
+
+              </view>
+            </i-col>
+          </i-row>
+        </view>
+        <scroll-view>
+          <view class='i-action-ico'>
+
+            <view wx:for="{{result.questionList}}" class="i-action-ico-bor" wx:for-index="idx" for:key="i" data-index="{{idx}}" bindtap='dump'>
+              <view class="{{index==idx?'def':''}}">
+                <!-- <i-icon type="right" color="#3D971C" wx:if="{{item.judge==1}}" size="14" />
+                <i-icon type="close" color="#A01E32" wx:if="{{item.judge==0}}" size="14" /> -->
+                <text>{{idx+1}}</text>
+              </view>
+            </view>
+            <!-- <view>1 </view> -->
+          </view>
+        </scroll-view>
+      </view>
+    </i-action-sheet>
+    <!--下拉弹出-->
   </view>
 </view>

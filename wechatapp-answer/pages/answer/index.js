@@ -328,8 +328,10 @@ Page({
       }
     }
     //添加错题
-    wx.u.addError(menu, err, questionMenu).then(res=>{
-
+    wx.u.addError(menu, err, questionMenu).then(res=>{})
+    //统计分数
+    wx.u.getStatistics(menu).then(res=>{
+      wx.u.statistics(res.result.objectId, this.data.questionOk).then(res1=>{})
     })
   },
   //交卷对话框

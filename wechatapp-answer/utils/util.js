@@ -241,6 +241,98 @@ const getError = (menu)=>{
   })
 }
 
+/**
+ * 移除错题
+ * id:id
+ * questionList:错题集合
+ */
+const deleteError = (id, questionList)=>{
+  return new Promise((resolve, reject) => {
+    const query = wx.Bmob.Query('error')
+    query.get(id).then(res=>{
+      res.set('questionList', questionList)
+      res.save()
+      resolve({ 'result': true })
+    })
+  })
+}
+
+/**
+ * 获取统计分数
+ * menu:套题id
+ */
+const getStatistics = (menu)=>{
+  return new Promise((resolve,reject)=>{
+    const query = wx.Bmob.Query('statistics')
+    query.equalTo('menu','==',menu)
+    query.find().then(res=>{
+      resolve({ 'result': res[0] })
+    })
+  })
+}
+
+/**
+ * 统计分数
+ * id:统计记录id
+ * addScore:加分数
+ */
+const statistics = (id,addScore)=>{
+  return new Promise((resolve, reject) => {
+    const query = wx.Bmob.Query('statistics')
+    query.get(id).then(res=>{
+      res.set('peopleNum',(res.peopleNum+1))
+      res.set('allScore',(res.allScore+addScore))
+      res.save()
+    })
+  })
+}
+
+/**
+ * 查询排序
+ * menu:套题id
+ */
+const getRank = (menu)=>{
+  return new Promise((resolve,reject)=>{
+    const query = wx.Bmob.Query('history')
+    query.equalTo('menu','==',menu)
+    query.include('user')
+    query.order('-score')
+    query.find().then(res=>{
+      if (res.length > 0) {
+        resolve({
+          'result': true,
+          'data': res
+        })
+      } else {
+        resolve({ 'result': false })
+      }
+    })
+  })
+}
+
+/**
+ * 查询测试记录
+ */
+const getHistoryList =()=>{
+  return new Promise((resolve, reject) => {
+    let current = wx.Bmob.User.current();
+    let uid = current.objectId;
+    const query = wx.Bmob.Query('history')
+    query.equalTo('user','==',uid)
+    query.order('-createdAt')
+    query.find().then(res=>{
+      if (res.length > 0) {
+        resolve({
+          'result': true,
+          'data': res
+        })
+      } else {
+        resolve({ 'result': false })
+      }
+    })
+  })
+}
+
 module.exports = {
   formatTime: formatTime,
   getUserInfo: getUserInfo,
@@ -253,5 +345,10 @@ module.exports = {
   getBeatNum: getBeatNum,
   getAverage: getAverage,
   addError: addError,
-  getError: getError
+  getError: getError,
+  deleteError: deleteError,
+  getStatistics: getStatistics,
+  statistics: statistics,
+  getRank: getRank,
+  getHistoryList: getHistoryList
 }

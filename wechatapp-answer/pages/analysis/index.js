@@ -28,7 +28,8 @@ Page({
         result:res.result,
         right: right,
         wrong: wrong,
-        persent: persent
+        persent: persent,
+        total: res.result.questionList.length
       })
       this.setThisData(this.data.index)
     })   
@@ -50,7 +51,6 @@ Page({
       currentD: currentD,
       questionInfo: r[i],
       answer: answer,
-      total: r.length
     })
     console.log(this.data.current)
   },

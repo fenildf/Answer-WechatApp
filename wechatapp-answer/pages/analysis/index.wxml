@@ -53,8 +53,11 @@
           <view>空</view>
         </view>
         <view class='answerTitle'>解析：</view>
-        <view class='answerContent'>
+        <view wx:if="{{questionInfo.help !=''}}" class='answerContent'>
           {{questionInfo.help}}
+        </view>
+        <view wx:else class='answerContent'>
+          无
         </view>
       </view>
     </i-panel>

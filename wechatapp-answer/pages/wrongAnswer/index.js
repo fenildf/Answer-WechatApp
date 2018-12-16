@@ -5,10 +5,13 @@ Page({
    * 页面的初始数据
    */
   data: {
+    id:'',//错题id
     loading:true,
     questionInfo:{},
     s: ['A. ', 'B. ', 'C. ', 'D. ', 'E. '],
     showAnswer:false,
+    index:0,
+    total:0
   },
 
   onLoad: function (options) {
@@ -16,15 +19,82 @@ Page({
     wx.u.getError(menu).then(res=>{
       console.log(res)
       this.setData({
-        result: res.error,
+        id:res.error[0].objectId,
+        result: res.error[0],
         loading:false,
-        questionInfo:res.error[0].questionList[0]
+        total: res.error[0].questionList.length,
       })
+      this.setThisData(0)
     })
   },
   showAnswer(){
     this.setData({
       showAnswer:true
     })
+  },
+  //翻页
+  handlePageChange({ detail }){
+    const action = detail.type;
+    const r = this.data.result.questionList
+
+    if (action === 'next') {
+      if (this.data.index >= (r.length - 1)) {
+        console.log(this.data.index)
+        return;
+      }
+      this.setThisData((this.data.index + 1));
+      this.setData({
+        showAnswer: false,
+        index: (this.data.index + 1),
+      })
+    } else {
+      this.setThisData((this.data.index - 1));
+      this.setData({
+        showAnswer: false,
+        index: (this.data.index - 1),
+      })
+    }
+  },
+  setThisData(i) {
+    const r = this.data.result.questionList
+    var current = "";
+    var currentD = [];
+    console.log(r)
+    this.setData({
+      current: current,
+      currentD: currentD,
+      questionInfo: r[i],
+    })
+  },
+  //弹出统计下拉层
+  handleOpen() {
+    this.setData({
+      actionVisible: true
+    })
+  },
+  //关闭统计下拉层
+  actionCancel() {
+    this.setData({
+      actionVisible: false
+    })
+  },
+  dump(e) {
+    console.log(e)
+    var index = e.currentTarget.dataset.index
+    this.setThisData(index)
+    this.setData({
+      index: index,
+      actionVisible: false
+    })
+  },
+  deleteError(){
+    this.data.result.questionList.splice(this.data.index, 1);
+    wx.u.deleteError(this.data.id,this.data.result.questionList)
+    this.setData({
+      result: this.data.result,
+      total: this.data.result.questionList.length,
+      actionVisible: false
+    })
+    this.setThisData(this.data.index)
   }
 })

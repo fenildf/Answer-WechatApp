@@ -8,6 +8,7 @@
     "i-row": "../../dist/row/index",
     "i-col": "../../dist/col/index",
     "i-page": "../../dist/page/index",
-    "i-icon": "../../dist/icon/index"
+    "i-icon": "../../dist/icon/index",
+    "i-action-sheet": "../../dist/action-sheet/index"
   }
 }

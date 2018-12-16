@@ -1,4 +1,3 @@
-// pages/wrong/index.js
 Page({
 
   /**
@@ -14,7 +13,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad (options) {
+  onLoad(options) {
     //获取套题
     wx.u.getQuestionMenu().then(res => {
       var questionMenu = [];
@@ -41,15 +40,14 @@ Page({
     })
     var objectQuestionMenu = this.data.objectQuestionMenu
     var menu = objectQuestionMenu[e.detail.value].objectId
-    wx.u.getError(menu).then(res=>{
-      console.log(res.error[0].questionList.length)
-      if (res.result && res.error[0].questionList.length>0){
+    wx.u.getRank(menu).then(res=>{
+      if(res.result){
         wx.navigateTo({
-          url: '/pages/wrongAnswer/index?menu='+menu,
+          url: '/pages/rankList/index?menu=' + menu,
         })
       }else{
         wx.showToast({
-          title: '无错题记录',
+          title: '暂无记录',
           duration: 1500,
           image: '/images/warning.png'
         })

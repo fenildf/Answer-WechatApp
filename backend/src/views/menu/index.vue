@@ -179,8 +179,13 @@
                     if(valid){
                         this.loading = true
                         var query = this.$Bmob.Query('questionMenu')
+                        var query1 = this.$Bmob.Query('statistics')
                         query.set('name',this.form['name'])
                         query.save().then(res=>{
+                            query1.set('menu',res.objectId)
+                            query1.set('peopleNum',0)
+                            query1.set('allScore',0)
+                            query1.save()
                             this.loading = false
                             this._getMenuInfo()
                             this.form['name'] = ''

@@ -1,0 +1,15 @@
+<view class="page">
+  <scroll-view class='messScroll' scroll-y bindscrolltolower="lower" bindscrolltolower="getBottom">
+    <view class='rankList' wx:for="{{rankList}}" bindtap='showDetail' data-index="{{index}}">
+      <view class="item">
+        <image class="userPhoto" src="{{item.user.avatarUrl}}" />
+        <view class='middle'>
+          {{item.user.nickName}}
+        </view>
+        <view class='score'>
+          {{item.score}}
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>
