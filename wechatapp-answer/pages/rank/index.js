@@ -7,7 +7,7 @@ Page({
     selectQuestionMenu: '请选择',
     objectQuestionMenu: {},
     questionMenu: [],
-    index: 0,
+    index: 0
   },
 
   /**

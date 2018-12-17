@@ -14,12 +14,13 @@
     "pages/rank/index",
     "pages/rankList/index",
     "pages/my/index",
-    "pages/historyList/index"
+    "pages/historyList/index",
+    "pages/feedback/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#2db7f5",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "答题酷",
     "navigationBarTextStyle": "#fff"
   },
   "tabBar": {

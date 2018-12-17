@@ -6,7 +6,8 @@ Page({
    */
   data: {
     dataInfo:{},
-    nodata:false
+    nodata:false,
+    loading:true
   },
 
   /**
@@ -20,11 +21,13 @@ Page({
         }
         this.setData({
           dataInfo:res.data,
-          nodata: false
+          nodata: false,
+          loading:false
         })
       }else{
         this.setData({
-          nodata:true
+          nodata:true,
+          loading:false
         })
       }
     })

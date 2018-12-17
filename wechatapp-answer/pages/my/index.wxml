@@ -23,6 +23,12 @@
 <view class="bg-line"></view>
 <i-cell-group>
   <i-cell title="测试记录" is-link url="/pages/historyList/index">
-    <i-icon type="activity" color="#18836B" slot="icon" size='18' />
+    <i-icon type="activity" color="#2db7f5" slot="icon" size='18' />
+  </i-cell>
+  <i-cell title="反馈意见" is-link url="/pages/feedback/index">
+    <i-icon type="service" color="#2db7f5" slot="icon" size='18' />
+  </i-cell>
+  <i-cell title="关于我们" bind:click="about">
+    <i-icon type="addressbook" color="#2db7f5" slot="icon" size='18'/>
   </i-cell>
 </i-cell-group>

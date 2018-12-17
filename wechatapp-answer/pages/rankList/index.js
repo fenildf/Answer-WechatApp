@@ -5,7 +5,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    rankList:{}
+    rankList:{},
+    loading: true,
   },
 
   /**
@@ -15,7 +16,8 @@ Page({
     var menu = options.menu
     wx.u.getRank(menu).then(res => {
       this.setData({
-        rankList:res.data
+        rankList:res.data,
+        loading:false
       })
     })
   },

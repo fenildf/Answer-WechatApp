@@ -1,4 +1,5 @@
 {
+  "navigationBarTitleText": "答题",
   "usingComponents": {
     "i-spin": "../../dist/spin/index",
     "i-row": "../../dist/row/index",

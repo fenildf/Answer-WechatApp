@@ -230,12 +230,20 @@ const getError = (menu)=>{
     query.equalTo('menu','==',menu)
     query.find().then(res=>{
       if(res.length>0){
-        resolve({ 
-          'result': true,
-          'error':res
-        })
+        if(res[0].questionList.length > 0){
+          resolve({
+            'result': true,
+            'error': res
+          })
+        }else{
+          resolve({
+            'result': false
+          })
+        }
       }else{
-        resolve({ 'result': false })
+        resolve({
+          'result': false
+        })
       }
     })
   })
@@ -294,6 +302,7 @@ const statistics = (id,addScore)=>{
 const getRank = (menu)=>{
   return new Promise((resolve,reject)=>{
     const query = wx.Bmob.Query('history')
+    query.select("user,score");
     query.equalTo('menu','==',menu)
     query.include('user')
     query.order('-score')
@@ -321,6 +330,7 @@ const getHistoryList =()=>{
     query.equalTo('user','==',uid)
     query.order('-createdAt')
     query.find().then(res=>{
+      console.log(res.length)
       if (res.length > 0) {
         resolve({
           'result': true,
@@ -330,6 +340,25 @@ const getHistoryList =()=>{
         resolve({ 'result': false })
       }
     })
+  })
+}
+
+const addFeedBack = (phone, content) => {
+  let current = wx.Bmob.User.current();
+  let uid = current.objectId;
+  return new Promise((resolve, reject) => {
+    const query = wx.Bmob.Query('feedback');
+    const pointer = wx.Bmob.Pointer('_User')
+    const poiID = pointer.set(uid)
+    query.set('uid', poiID);
+    query.set('phone', phone);
+    query.set('content', content);
+    query.save().then(res => {
+      resolve({ 'result': 'success' });
+    }).catch(err => {
+      resolve({ 'result': 'fail' });
+    })
+
   })
 }
 
@@ -350,5 +379,6 @@ module.exports = {
   getStatistics: getStatistics,
   statistics: statistics,
   getRank: getRank,
-  getHistoryList: getHistoryList
+  getHistoryList: getHistoryList,
+  addFeedBack: addFeedBack
 }

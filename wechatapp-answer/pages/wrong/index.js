@@ -42,8 +42,7 @@ Page({
     var objectQuestionMenu = this.data.objectQuestionMenu
     var menu = objectQuestionMenu[e.detail.value].objectId
     wx.u.getError(menu).then(res=>{
-      console.log(res.error[0].questionList.length)
-      if (res.result && res.error[0].questionList.length>0){
+      if (res.result){
         wx.navigateTo({
           url: '/pages/wrongAnswer/index?menu='+menu,
         })
