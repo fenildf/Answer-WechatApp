@@ -1,0 +1,40 @@
+{
+  "pages":[
+    
+    "pages/create/index",
+    "pages/join/index",
+    "pages/my/index",
+    "pages/index/index"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#1bd0ad",
+    "navigationBarTitleText": "答题酷Plus",
+    "navigationBarTextStyle":"#fff"
+  },
+  "tabBar": {
+    "color": "#AAAAAA",
+    "selectedColor": "#1bd0ad",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      {
+        "iconPath": "/images/created.png",
+        "selectedIconPath": "/images/created-selected.png",
+        "text": "我的创建",
+        "pagePath": "pages/create/index"
+      },
+      {
+        "iconPath": "/images/join.png",
+        "selectedIconPath": "/images/join-selected.png",
+        "text": "我的参与",
+        "pagePath": "pages/join/index"
+      },
+      {
+        "iconPath": "/images/personal.png",
+        "selectedIconPath": "/images/personal-selected.png",
+        "text": "个人中心",
+        "pagePath": "pages/my/index"
+      }
+    ]
+  }
+}
