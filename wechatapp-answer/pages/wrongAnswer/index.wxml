@@ -14,9 +14,11 @@
         <text class='question-title'>{{questionInfo.title}}</text>
       </view>
     </view>
-    <image wx:if="{{questionInfo.picUrl}}" style="width: 100%; height: 200px; background-color: #fff;" mode="aspectFit" src="{{questionInfo.picUrl}}"></image>
+    <image wx:if="{{questionInfo.picUrl}}" style="width: 100%; height: 200px; background-color: #fff;" mode="aspectFit" src="{{questionInfo.picUrl}}" data-src="{{questionInfo.picUrl}}" catchtap="showPic"></image>
+    <audio wx:if="{{questionInfo.audio}}" style="width:{{windowWidth}}px;margin-bottom:10px;text-align:center;" src="{{questionInfo.audio}}" id="myAudio" controls loop></audio>
+    <video wx:if="{{questionInfo.video}}" src="{{questionInfo.video}}" objectFit="cover" style="width:{{windowWidth}}px;margin-bottom:10px;" page-gesture="true" show-fullscreen-btn="false" controls></video>
 
-    <i-panel wx:if="{{questionInfo.type==1}}">
+    <i-panel>
       <i-radio-group wx:for="{{questionInfo.choseList}}" wx:key="item.id">
         <i-radio disabled="true" position="left" value="{{s[index]}}{{item.item}}">
         </i-radio>
@@ -29,16 +31,24 @@
 
     <!--帮助-->
     <i-panel wx:if="{{showAnswer}}">
-      <view class='answer'>
-        <view class='answerTitle'>正确答案：</view>
-        <view class='answerContent'>
-          <view wx:for="{{questionInfo.choseList}}" wx:key="chose" wx:if="{{item.isChose}}">{{s[index]}}{{item.item}}</view>
+      <view>
+        <view class='answer'>
+          <view class='answerTitle'>正确答案：</view>
+          <view class='answerContent'>
+            <view wx:for="{{questionInfo.choseList}}" wx:key="chose" wx:if="{{item.isChose}}">{{s[index]}}{{item.item}}</view>
+          </view>
+          <view class='answerTitle'>解析：</view>
+          <view wx:if="{{questionInfo.help !=''}}" class='answerContent'>
+            {{questionInfo.help}}
+          </view>
+          <view wx:else class='answerContent'>
+            无
+          </view>
         </view>
-        <view class='answerTitle'>解析：</view>
-        <view wx:if="{{questionInfo.help !=''}}" class='answerContent'>
-          {{questionInfo.help}}
-        </view>
-        <view wx:else class='answerContent'>
+        <image wx:if="{{questionInfo.helpPicUrl}}" style="width: 100%; height: 200px; background-color: #fff;padding:0;" mode="aspectFit" src="{{questionInfo.helpPicUrl}}" data-src="{{questionInfo.helpPicUrl}}" catchtap="showPic"></image>
+        <audio wx:if="{{questionInfo.helpAudioUrl}}" style="width:{{windowWidth}}px;margin-bottom:10px;text-align:center;" src="{{questionInfo.helpAudioUrl}}" id="myAudio" controls loop></audio>
+        <video wx:if="{{questionInfo.helpVideoUrl}}" src="{{questionInfo.helpVideoUrl}}" objectFit="cover" style="width:{{windowWidth}}px;margin-bottom:10px;" page-gesture="true" show-fullscreen-btn="false" controls></video>
+        <view wx:if="{{questionInfo.help == '' && questionInfo.helpPicUrl == '' && questionInfo.helpAudioUrl == '' && questionInfo.helpVideoUrl == '' }}" class='answerContent'>
           无
         </view>
       </view>

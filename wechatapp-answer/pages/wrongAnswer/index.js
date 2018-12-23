@@ -15,6 +15,14 @@ Page({
   },
 
   onLoad: function (options) {
+    var that = this;
+    wx.getSystemInfo({
+      success(res) {
+        that.setData({
+          windowWidth: res.windowWidth
+        })
+      }
+    })
     var menu = options.menu
     wx.u.getError(menu).then(res=>{
       console.log(res)
@@ -96,5 +104,13 @@ Page({
       actionVisible: false
     })
     this.setThisData(this.data.index)
-  }
+  },
+  //放大图片
+  showPic: function (e) {
+    const src = e.currentTarget.dataset.src;
+    wx.previewImage({
+      current: src,
+      urls: [src]
+    })
+  },
 })

@@ -46,6 +46,13 @@ Page({
 
   onLoad(e) {
     var that = this;
+    wx.getSystemInfo({
+      success(res) {
+        that.setData({
+          windowWidth: res.windowWidth
+        })
+      }
+    })
     wx.u.getSetting().then(res1 => {
       var time = 0;
       for (let i in res1.result) {
@@ -372,5 +379,13 @@ Page({
     this.setData({
       actionVisible:false
     })
-  }
+  },
+  //放大图片
+  showPic: function (e) {
+    const src = e.currentTarget.dataset.src;
+    wx.previewImage({
+      current: src,
+      urls: [src]
+    })
+  },
 })

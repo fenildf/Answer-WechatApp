@@ -16,6 +16,14 @@ Page({
   },
 
   onLoad (options) {
+    var that = this;
+    wx.getSystemInfo({
+      success(res) {
+        that.setData({
+          windowWidth: res.windowWidth
+        })
+      }
+    })
     var objectId = options.objectId
     wx.u.getHistory(objectId).then(res => {
       console.log(res)
@@ -95,5 +103,13 @@ Page({
       index:index,
       actionVisible: false
     })
-  }
+  },
+  //放大图片
+  showPic: function (e) {
+    const src = e.currentTarget.dataset.src;
+    wx.previewImage({
+      current: src,
+      urls: [src]
+    })
+  },
 })
