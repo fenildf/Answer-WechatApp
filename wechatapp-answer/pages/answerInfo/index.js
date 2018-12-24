@@ -14,14 +14,9 @@ Page({
     var id = e.id
     var questionMenu = e.questionMenu
     var time, questionNum
-    wx.u.getSetting().then(res=>{
-      for(let i in res.result){
-        if(res.result[i].key == 'time'){
-          time = res.result[i].value
-        } else if (res.result[i].key == 'questionNum'){
-          questionNum = res.result[i].value
-        }
-      }
+    wx.u.getMenuById(id).then(res=>{
+      time = res.result.time
+      questionNum = res.result.questionNum
       this.setData({
         id:id,
         time:time,

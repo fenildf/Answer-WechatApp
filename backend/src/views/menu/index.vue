@@ -18,30 +18,42 @@
             </el-pagination>
         </div>
         <!--新增对话框-->
-        <el-dialog title="新增套题" :visible.sync="dialogVisible" width="30%">
+        <el-dialog title="新增套题" :visible.sync="dialogVisible" width="35%">
             <div>
-                <el-form :model="form" :rules="rules" ref="ruleForm" label-width="80px">
+                <el-form :model="form" :rules="rules" ref="ruleForm" label-width="150px">
                     <el-form-item label="名称" prop="name">
                         <el-input v-model="form.name" size="small" style="width:200px"></el-input>
                     </el-form-item>
+                    <el-form-item label="时间(分钟)" prop="time">
+                        <el-input v-model="form.time" size="small" style="width:200px"></el-input>
+                    </el-form-item>
+                    <el-form-item label="题目数量(最大100)" prop="questionNum">
+                        <el-input v-model="form.questionNum" size="small" style="width:200px"></el-input>
+                    </el-form-item>
                 </el-form>
             </div>
-            <div style="margin-left: 80px;margin-top: 30px;">
+            <div style="margin-left: 150px;margin-top: 30px;">
                 <el-button @click="dialogVisible = false">取 消</el-button>
                 <el-button type="primary"  @click="submitForm('ruleForm')">确 定</el-button>
             </div>
         </el-dialog>
 
         <!--修改对话框-->
-        <el-dialog title="修改套题" :visible.sync="dislogEditVisible" width="30%">
+        <el-dialog title="修改套题" :visible.sync="dislogEditVisible" width="35%">
             <div>
-                <el-form :model="editForm" :rules="editrules" ref="editForm" label-width="80px">
+                <el-form :model="editForm" :rules="editrules" ref="editForm" label-width="150px">
                     <el-form-item label="名称" prop="name">
                         <el-input v-model="editForm.name" size="small" style="width:200px"></el-input>
                     </el-form-item>
+                    <el-form-item label="时间(分钟)" prop="time">
+                        <el-input v-model="editForm.time" size="small" style="width:200px"></el-input>
+                    </el-form-item>
+                    <el-form-item label="题目数量(最大100)" prop="questionNum">
+                        <el-input v-model="editForm.questionNum" size="small" style="width:200px"></el-input>
+                    </el-form-item>
                 </el-form>
             </div>
-            <div style="margin-left: 80px;margin-top: 30px;">
+            <div style="margin-left: 150px;margin-top: 30px;">
                 <el-button @click="dislogEditVisible = false">取 消</el-button>
                 <el-button type="primary"  @click="submitEditForm('editForm')">确 定</el-button>
             </div>
@@ -57,6 +69,22 @@
             var validateName = (rule, value, callback) => {
                 if (value === '') {
                     callback(new Error('请输入套题名称'));
+                } else {
+                    callback();
+                }
+            };
+            var validateTime = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入时间'));
+                } else {
+                    callback();
+                }
+            };
+            var validateQuestionNum = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入题目数量'));
+                } else if(value > 100){
+                    callback(new Error('题目数量最大为100'));
                 } else {
                     callback();
                 }
@@ -83,6 +111,14 @@
                             label:'套题名称'
                         },
                         {
+                            prop:'time',
+                            label:'时间(分钟)'
+                        },
+                        {
+                            prop:'questionNum',
+                            label:'题目数量'
+                        },
+                        {
                             prop:'createdAt',
                             label:'添加日期'
                         }
@@ -99,16 +135,24 @@
                     ]
                 },
                 form:{
-                    name:''
+                    name:'',
+                    time:'',
+                    questionNum:''
                 },
                 editForm:{
-                    name:''
+                    name:'',
+                    time:'',
+                    questionNum:''
                 },
                 rules:{
-                    name:{validator:validateName ,trigger:'change' }
+                    name:{validator:validateName ,trigger:'change' },
+                    time:{validator:validateTime ,trigger:'change' },
+                    questionNum:{validator:validateQuestionNum ,trigger:'change' }
                 },
                 editrules:{
-                    name: { validator: validateName, trigger: 'change' }
+                    name: { validator: validateName, trigger: 'change' },
+                    time:{validator:validateTime ,trigger:'change' },
+                    questionNum:{validator:validateQuestionNum ,trigger:'change' }
                 },
             }
         },
@@ -181,6 +225,8 @@
                         var query = this.$Bmob.Query('questionMenu')
                         var query1 = this.$Bmob.Query('statistics')
                         query.set('name',this.form['name'])
+                        query.set('time',this.form['time'])
+                        query.set('questionNum',this.form['questionNum'])
                         query.save().then(res=>{
                             query1.set('menu',res.objectId)
                             query1.set('peopleNum',0)
@@ -206,6 +252,8 @@
                 console.log(scope)
                 this.dislogEditVisible = true
                 this.editForm.name = scope.row.name
+                this.editForm.time = scope.row.time
+                this.editForm.questionNum = scope.row.questionNum
                 this.editForm.objectId = scope.row.objectId
             },
             submitEditForm(formName){
@@ -216,6 +264,8 @@
                         var query = this.$Bmob.Query('questionMenu')
                         query.set('id', this.editForm.objectId)
                         query.set('name',this.editForm.name)
+                        query.set('time',this.editForm.time)
+                        query.set('questionNum',this.editForm.questionNum)
                         query.save().then(res=>{
                             this.$message.success('修改成功')
                             this.dislogEditVisible = false

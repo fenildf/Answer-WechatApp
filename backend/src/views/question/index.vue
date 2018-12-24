@@ -28,7 +28,7 @@
 
         <!--add question dialog-->
         <el-dialog title="增加题目" :visible.sync="dialogVisible" width="40%">
-            <el-form ref="ruleForm" :model="form" :rules="rules" label-width="80px">
+            <el-form ref="ruleForm" :model="form" :rules="rules" label-width="100px">
                 <el-row>
                     <el-form-item label="题目" prop="title">
                         <el-input v-model="form.title" size="small" type="textarea"></el-input>
@@ -61,7 +61,17 @@
                     </el-form-item>
                 </el-row>
                 <el-row>
-                    <el-form-item label="题目类型" label-width="80px" prop="type">
+                    <el-form-item label="音频Url" prop="help">
+                        <el-input v-model="form.audio" size="small"></el-input>
+                    </el-form-item>
+                </el-row>
+                <el-row>
+                    <el-form-item label="视频Url" prop="help">
+                        <el-input v-model="form.video" size="small"></el-input>
+                    </el-form-item>
+                </el-row>
+                <el-row>
+                    <el-form-item label="题目类型" prop="type">
                         <el-select v-model="form.type" placeholder="请选择" size="small">
                             <el-option
                                     v-for="item in type"
@@ -72,7 +82,7 @@
                     </el-form-item>
                 </el-row>
                 <el-row>
-                    <el-form-item label="答案选项" label-width="80px" prop="checkitems">
+                    <el-form-item label="答案选项" prop="checkitems">
                         <!-- 单选 -->
                         <el-checkbox-group v-if="form.type === '1'" v-model="form.choseList" :max="1" class="select-group">
                             <el-checkbox v-for="(item,index) in form.checkitems" :label="index" :key="item.id"  style="margin:0">
@@ -97,6 +107,21 @@
                         <el-input v-model="form.help" size="small" type="textarea"></el-input>
                     </el-form-item>
                 </el-row>
+                <el-row>
+                    <el-form-item label="帮助图片Url" prop="help">
+                        <el-input v-model="form.helpPicUrl" size="small"></el-input>
+                    </el-form-item>
+                </el-row>
+                <el-row>
+                    <el-form-item label="帮助音频Url" prop="help">
+                        <el-input v-model="form.helpAudioUrl" size="small"></el-input>
+                    </el-form-item>
+                </el-row>
+                <el-row>
+                    <el-form-item label="帮助视频Url" prop="help">
+                        <el-input v-model="form.helpVideoUrl" size="small"></el-input>
+                    </el-form-item>
+                </el-row>
             </el-form>
             <div style="margin-left: 80px;margin-top: 30px;">
                 <el-button type="primary" @click="handleSubmit('ruleForm')">确 定</el-button>
@@ -106,7 +131,7 @@
 
         <!--edit querstion dialog-->
         <el-dialog title="修改题目" :visible.sync="editDialogVisible" width="40%">
-            <el-form ref="editform" :model="form" :rules="editRule" label-width="80px">
+            <el-form ref="editform" :model="form" :rules="editRule" label-width="100px">
                 <el-form-item label="题目" prop="title">
                     <el-input v-model="form.title" size="small" type="textarea"></el-input>
                 </el-form-item>
@@ -122,10 +147,34 @@
                         <i v-else class="el-icon-plus avatar-uploader-icon"/>
                     </el-upload>
                 </el-form-item>
+                <el-row>
+                    <el-form-item label="音频Url" prop="audio">
+                        <el-input v-model="form.audio"  size="small"></el-input>
+                    </el-form-item>
+                </el-row>
+                <el-row>
+                    <el-form-item label="视频Url" prop="video">
+                        <el-input v-model="form.video"  size="small"></el-input>
+                    </el-form-item>
+                </el-row>
                 <el-form-item label="帮助描述" prop="help">
                     <el-input v-model="form.help" size="small" type="textarea"></el-input>
                 </el-form-item>
-
+                <el-row>
+                    <el-form-item label="帮助图片Url" prop="helpPicUrl">
+                        <el-input v-model="form.helpPicUrl" size="small"></el-input>
+                    </el-form-item>
+                </el-row>
+                <el-row>
+                    <el-form-item label="帮助音频Url" prop="helpAudioUrl">
+                        <el-input v-model="form.helpAudioUrl" size="small"></el-input>
+                    </el-form-item>
+                </el-row>
+                <el-row>
+                    <el-form-item label="帮助视频Url" prop="helpVideoUrl">
+                        <el-input v-model="form.helpVideoUrl" size="small"></el-input>
+                    </el-form-item>
+                </el-row>
             </el-form>
             <div style="margin-left: 80px;margin-top: 30px;">
                 <el-button type="primary" @click="handleEditSubmit('editform')">确 定</el-button>
@@ -232,6 +281,11 @@
                     title:'',
                     menu:'',
                     picUrl:'',
+                    audio:'',
+                    video:'',
+                    helpPicUrl:'',
+                    helpAudioUrl:'',
+                    helpVideoUrl:'',
                     help:'',
                     type:'',
                     choseList:[],
@@ -260,6 +314,21 @@
                     if(this.form.picUrl){
                         this.form.picUrl = ''
                     }
+                    if(this.form.audio){
+                        this.form.audio = ''
+                    }
+                    if(this.form.video){
+                        this.form.video = ''
+                    }
+                    if(this.form.helpPicUrl){
+                        this.form.helpPicUrl = ''
+                    }
+                    if(this.form.helpAudioUrl){
+                        this.form.helpAudioUrl = ''
+                    }
+                    if(this.form.helpVideoUrl){
+                        this.form.helpVideoUrl = ''
+                    }
                     this.$refs['ruleForm'].resetFields();
                 }
             },
@@ -271,6 +340,21 @@
                     this.form.menu=''
                     if(this.form.picUrl){
                         this.form.picUrl = ''
+                    }
+                    if(this.form.audio){
+                        this.form.audio = ''
+                    }
+                    if(this.form.video){
+                        this.form.video = ''
+                    }
+                    if(this.form.helpPicUrl){
+                        this.form.helpPicUrl = ''
+                    }
+                    if(this.form.helpAudioUrl){
+                        this.form.helpAudioUrl = ''
+                    }
+                    if(this.form.helpVideoUrl){
+                        this.form.helpVideoUrl = ''
                     }
                     if (this.$refs['ruleForm']) {
                         this.$refs['ruleForm'].resetFields();
@@ -414,12 +498,18 @@
                     console.log(this.form)
                     query.set('id',this.form.objectId)
                     query.set('title',this.form.title)
-                    if(this.form.picUrl){
+                    if(this.form.picUrl == undefined){
+                        query.set('picUrl','')
+                    }else{
                         query.set('picUrl',this.form.picUrl)
                     }
-                    if(this.form.help){
-                        query.set('help',this.form.help)
-                    }
+
+                    query.set('audio',this.form.audio)
+                    query.set('video',this.form.video)
+                    query.set('helpPicUrl',this.form.helpPicUrl)
+                    query.set('helpVideoUrl',this.form.helpVideoUrl)
+                    query.set('helpAudioUrl',this.form.helpAudioUrl)
+                    query.set('help',this.form.help)
                     query.save().then(res => {
                         this.$message.success('编辑成功')
                         this.editDialogVisible = false
@@ -458,7 +548,12 @@
                 this.form.title = scope.row.title
                 this.form.type = scope.row.type
                 this.form.picUrl = scope.row.picUrl
+                this.form.audio = scope.row.audio
+                this.form.video = scope.row.video
                 this.form.help = scope.row.help
+                this.form.helpPicUrl = scope.row.helpPicUrl
+                this.form.helpAudioUrl = scope.row.helpAudioUrl
+                this.form.helpVideoUrl = scope.row.helpVideoUrl
                 this.form.menu = scope.row.menu
                 console.log(this.form)
             },
@@ -486,6 +581,21 @@
                 }
                 if(this.form.help){
                     params.help = this.form.help
+                }
+                if(this.form.audio){
+                    params.audio = this.form.audio
+                }
+                if(this.form.video){
+                    params.video = this.form.video
+                }
+                if(this.form.helpPicUrl){
+                    params.helpPicUrl = this.form.helpPicUrl
+                }
+                if(this.form.helpAudioUrl){
+                    params.helpAudioUrl = this.form.helpAudioUrl
+                }
+                if(this.form.helpVideoUrl){
+                    params.helpVideoUrl = this.form.helpVideoUrl
                 }
 
                 return params

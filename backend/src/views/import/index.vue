@@ -112,6 +112,21 @@
                     if(d['图片链接']){
                         d.picUrl = d['图片链接']
                     }
+                    if(d['题目音频链接']){
+                        d.audio = d['题目音频链接']
+                    }
+                    if(d['题目视频链接']){
+                        d.video = d['题目视频链接']
+                    }
+                    if(d['帮助图片链接']){
+                        d.helpPicUrl = d['帮助图片链接']
+                    }
+                    if(d['帮助音频链接']){
+                        d.helpAudioUrl = d['帮助音频链接']
+                    }
+                    if(d['帮助视频链接']){
+                        d.helpVideoUrl = d['帮助视频链接']
+                    }
                     d.choseList = []
                     for(let key in d){
                         if (key === '题型') {
@@ -149,6 +164,11 @@
                         type: d.type,
                         choseList: d.choseList,
                         picUrl: d.picUrl ? d.picUrl : '',
+                        audio:d.audio ? d.audio : '',
+                        video:d.video ? d.video : '',
+                        helpPicUrl:d.helpPicUrl ? d.helpPicUrl : '',
+                        helpAudioUrl:d.helpAudioUrl ? d.helpAudioUrl : '',
+                        helpVideoUrl:d.helpVideoUrl ? d.helpVideoUrl : '',
                     })
                 }
                 this.batchQuestions(this.questions)

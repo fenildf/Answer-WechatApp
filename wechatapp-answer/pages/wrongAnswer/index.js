@@ -11,7 +11,9 @@ Page({
     s: ['A. ', 'B. ', 'C. ', 'D. ', 'E. '],
     showAnswer:false,
     index:0,
-    total:0
+    total:0,
+    showVideo: false,
+    showHelpVideo: false
   },
 
   onLoad: function (options) {
@@ -34,6 +36,10 @@ Page({
       })
       this.setThisData(0)
     })
+  },
+  onReady(res) {
+    this.videoContext = wx.createVideoContext('myVideo')
+    this.helpVideoContext = wx.createVideoContext('helpVideo')
   },
   showAnswer(){
     this.setData({
@@ -76,6 +82,8 @@ Page({
   },
   //弹出统计下拉层
   handleOpen() {
+    this.hideVideo()
+    this.hideHelpVideo()
     this.setData({
       actionVisible: true
     })
@@ -92,7 +100,8 @@ Page({
     this.setThisData(index)
     this.setData({
       index: index,
-      actionVisible: false
+      actionVisible: false,
+      showAnswer: false,
     })
   },
   deleteError(){
@@ -112,5 +121,29 @@ Page({
       current: src,
       urls: [src]
     })
+  },
+  showVideo() {
+    this.videoContext.play()
+    this.setData({
+      showVideo: true
+    })
+  },
+  hideVideo: function () {
+    this.videoContext.pause()
+    this.setData({
+      showVideo: false
+    });
+  },
+  showHelpVideo() {
+    this.helpVideoContext.play()
+    this.setData({
+      showHelpVideo: true
+    })
+  },
+  hideHelpVideo: function () {
+    this.helpVideoContext.pause()
+    this.setData({
+      showHelpVideo: false
+    });
   },
 })

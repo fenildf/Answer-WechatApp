@@ -41,7 +41,7 @@ Page({
         loading: false
       }
     ],
-
+    showVideo:false
   },
 
   onLoad(e) {
@@ -53,15 +53,11 @@ Page({
         })
       }
     })
-    wx.u.getSetting().then(res1 => {
-      var time = 0;
-      for (let i in res1.result) {
-        if (res1.result[i].key == 'time') {
-          time = res1.result[i].value
-        }
-      }
+    wx.u.getMenuById(e.id).then(res1 => {
+      var time = res1.result.time
+      var questionNum = res1.result.questionNum
       //获取题目
-      wx.u.getQuestions(e.id).then(res => {
+      wx.u.getQuestions(e.id, questionNum).then(res => {
         console.log(res.result);
         this.setData({
           loading:false,
@@ -91,6 +87,9 @@ Page({
       })
     });
     
+  },
+  onReady(res) {
+    this.videoContext = wx.createVideoContext('myVideo')
   },
   //设置当前题目
   setThisData(i) {
@@ -343,6 +342,7 @@ Page({
   },
   //交卷对话框
   handleSubmitOpen(){
+    this.hideVideo();
     this.setData({
       visible1:true
     })
@@ -370,6 +370,7 @@ Page({
   },
   //弹出统计下拉层
   handleOpen(){
+    this.hideVideo()
     this.setData({
       actionVisible:true
     })
@@ -387,5 +388,17 @@ Page({
       current: src,
       urls: [src]
     })
+  },
+  showVideo(){
+    this.videoContext.play()
+    this.setData({
+      showVideo:true
+    })
+  },
+  hideVideo: function () {
+    this.videoContext.pause()
+    this.setData({
+      showVideo: false
+    });
   },
 })

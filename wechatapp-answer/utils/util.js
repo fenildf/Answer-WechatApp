@@ -52,7 +52,7 @@ const changeUserInfo = (avatarUrl, nickName) => {
 }
 
 /**
- * 获取套题
+ * 获取套题列表
  */
 const getQuestionMenu = () => {
   return new Promise((resolve, reject) => {
@@ -67,13 +67,30 @@ const getQuestionMenu = () => {
 }
 
 /**
+ * 获取套题
+ * id:套题id
+ */
+const getMenuById =(id)=>{
+  return new Promise((resolve, reject) => {
+    const query = wx.Bmob.Query('questionMenu')
+    query.get(id).then(res=>{
+      resolve({
+        'result': res
+      });
+    })
+  })
+}
+
+/**
  * 获取题目
  * menuId:套题id
+ * questionNum:题目数量
  */
-const getQuestions = (menuId) => {
+const getQuestions = (menuId,questionNum) => {
   return new Promise((resolve, reject) => {
     const query = wx.Bmob.Query('questions');
     query.equalTo('menu','==',menuId);
+    query.limit(parseInt(questionNum))
     query.find().then(res=>{
       resolve({
         'result':res
@@ -367,6 +384,7 @@ module.exports = {
   getUserInfo: getUserInfo,
   changeUserInfo: changeUserInfo,
   getQuestionMenu: getQuestionMenu,
+  getMenuById: getMenuById,
   getQuestions: getQuestions,
   getSetting: getSetting,
   addHistory: addHistory,

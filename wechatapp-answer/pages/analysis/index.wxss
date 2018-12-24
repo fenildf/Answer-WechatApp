@@ -182,3 +182,13 @@ view.i-action-ico-bor>view.def {
   font-size: 32rpx;
   margin-bottom: 26rpx;
 }
+.view{
+	background-color: #000;
+	vertical-align: top;
+	background-image: url('https://upload-images.jianshu.io/upload_images/6673460-7f784471f2c4e4c0.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 60rpx;
+	margin: 10rpx 0;
+}
+

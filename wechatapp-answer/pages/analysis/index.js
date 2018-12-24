@@ -12,7 +12,9 @@ Page({
     disabled:true,
     actionVisible:false,
     index:0,
-    chose:[]
+    chose:[],
+    showVideo: false,
+    showHelpVideo:false
   },
 
   onLoad (options) {
@@ -41,6 +43,10 @@ Page({
       })
       this.setThisData(this.data.index)
     })   
+  },
+  onReady(res) {
+    this.videoContext = wx.createVideoContext('myVideo')
+    this.helpVideoContext = wx.createVideoContext('helpVideo')
   },
   setThisData(i){
     console.log(i)
@@ -85,6 +91,8 @@ Page({
   },
   //弹出统计下拉层
   handleOpen() {
+    this.hideVideo()
+    this.hideHelpVideo()
     this.setData({
       actionVisible: true
     })
@@ -111,5 +119,29 @@ Page({
       current: src,
       urls: [src]
     })
+  },
+  showVideo() {
+    this.videoContext.play()
+    this.setData({
+      showVideo: true
+    })
+  },
+  hideVideo: function () {
+    this.videoContext.pause()
+    this.setData({
+      showVideo: false
+    });
+  },
+  showHelpVideo() {
+    this.helpVideoContext.play()
+    this.setData({
+      showHelpVideo: true
+    })
+  },
+  hideHelpVideo: function () {
+    this.helpVideoContext.pause()
+    this.setData({
+      showHelpVideo: false
+    });
   },
 })
