@@ -26,7 +26,7 @@ Page({
     })
   },
   start(){
-    wx.redirectTo({
+    wx.reLaunch({
       url: '/pages/answer/index?id=' + this.data.id + '&questionMenu=' + this.data.questionMenu
     })
     

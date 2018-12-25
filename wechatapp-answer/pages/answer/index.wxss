@@ -77,7 +77,11 @@ input {
 
 .col-class-sub {
   position: absolute;
-  left: 76%;
+  left: 80%;
+}
+.col-class-save{
+  position: absolute;
+  left: 60%;
 }
 
 .header-btn {

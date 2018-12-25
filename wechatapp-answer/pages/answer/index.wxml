@@ -1,13 +1,18 @@
 <!--pages/answer/index.wxml-->
 <view class='page'>
   <i-spin fix size="large" wx:if="{{loading}}"></i-spin>
+  <i-modal title="提醒" visible="{{ visible3 }}" actions="{{ actions3 }}" bind:click="handleClick2">
+    <view>检测到您之前有保存的记录</view>
+  </i-modal>
   <view class="header-model2 css-shadow-bottom">
     <i-row>
       <i-col span="10" i-class="col-class-down">
         <text class="model2-timepiece">倒计时：{{Countdown}}</text>
       </i-col>
-
-      <i-col span="14" i-class="col-class-sub">
+      <i-col span="10" i-class="col-class-save">
+        <text class="submit" bindtap='handleSaveOpen'>保存</text>
+      </i-col>
+      <i-col span="10" i-class="col-class-sub">
         <text class="submit" bindtap='handleSubmitOpen'>交卷</text>
       </i-col>
     </i-row>
@@ -110,9 +115,9 @@
           <view class='i-action-ico'>
 
             <view wx:for="{{result}}" class="i-action-ico-bor" wx:for-index="idx" for:key="i">
-              <view class="{{index-1==idx?'def':''}} {{item.isOk==1?'succ':item.isOk==0?'err':''}}">
-                <i-icon type="right" color="#3D971C" wx:if="{{item.isOk==1}}" size="14" />
-                <i-icon type="close" color="#A01E32" wx:if="{{item.isOk==0}}" size="14" />
+              <view class="{{index-1==idx?'def':''}} {{item.judge==1?'succ':item.judge==0?'err':''}}">
+                <i-icon type="right" color="#3D971C" wx:if="{{item.judge==1}}" size="14" />
+                <i-icon type="close" color="#A01E32" wx:if="{{item.judge==0}}" size="14" />
                 <text>{{idx+1}}</text>
               </view>
             </view>
@@ -131,6 +136,11 @@
     <!--时间到交卷对话框-->
     <i-modal title="提示" visible="{{visible2}}" actions="{{action2}}" bind:click="handleSubmit">
       <view>时间已到,系统自动交卷</view>
+    </i-modal>
+
+    <!--保存对话框-->
+    <i-modal visible="{{ visible4 }}" actions="{{ action4 }}" bind:click="checkSave">
+      <view>确认保存,下次继续答题？</view>
     </i-modal>
 
   </view>

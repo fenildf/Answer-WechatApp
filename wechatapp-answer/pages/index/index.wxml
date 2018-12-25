@@ -12,7 +12,7 @@
         <image class="wave wave-bg" src="../../images/wave.png" mode="aspectFill"></image>
       </view>
       <view class="bd">
-          <image class="smalltitle" src="../../images/confirm-word1.png"></image>
+          <!-- <image class="smalltitle" src="../../images/confirm-word1.png"></image> -->
         <view>
           <view class="confirm-btn" bindtap='goSign' wx:if="{{userInfo.avatarUrl}}">
             <text >立即进入</text>

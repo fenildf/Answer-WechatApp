@@ -115,39 +115,91 @@ const getSetting = ()=>{
 
 /**
  * 添加测试记录
- * menu:套题id
- * score:分数
- * questionList:问题集合
+ * params:参数
  */
-const addHistory = (menu, score, questionList, questionMenu)=>{
+const addHistory = (params)=>{
+  return new Promise((resolve, reject) => {
+    const query = wx.Bmob.Query('history')
+    let current = wx.Bmob.User.current();
+    let uid = current.objectId;
+    query.equalTo('menu', '==',params.menu)
+    query.equalTo('user','==',uid)
+    query.find().then(res=>{
+      if(res.length>0){
+        if(params.saveStatus == 1){
+          query.get(res[0].objectId).then(res1 => {
+            res1.set('score', params.score)
+            res1.set('questionList', params.result)
+            res1.set('saveStatus', params.saveStatus)
+            res1.save().then(res2 => {
+              console.log(res2)
+              resolve({ 'result': res[0].objectId })
+            })
+          })
+        }else{
+          query.get(res[0].objectId).then(res1 => {
+            res1.set('score', params.score)
+            res1.set('questionList', params.result)
+            res1.set('saveStatus', params.saveStatus)
+            res1.set('second',params.second)
+            res1.set('minute',params.minute)
+            res1.save().then(res2 => {
+              console.log(res2)
+              resolve({ 'result': res[0].objectId })
+            })
+          })
+        }
+        
+      }else{
+        const pointer = wx.Bmob.Pointer('_User')
+        const poiID = pointer.set(uid)
+        if(params.saveStatus == 1){
+          query.set('user', poiID)
+          query.set('score', params.score)
+          query.set('menu', params.menu)
+          query.set('questionMenu', params.questionMenu)
+          query.set('questionList', params.result)
+          query.set('saveStatus', params.saveStatus)
+          query.save().then(res2 => {
+            console.log(res2)
+            resolve({ 'result': res2.objectId })
+          })
+        }else{
+          query.set('user', poiID)
+          query.set('score', params.score)
+          query.set('menu', params.menu)
+          query.set('questionMenu', params.questionMenu)
+          query.set('questionList', params.result)
+          query.set('saveStatus', params.saveStatus)
+          query.set('second', params.second)
+          query.set('minute', params.minute)
+          query.save().then(res2 => {
+            console.log(res2)
+            resolve({ 'result': res2.objectId })
+          })
+        }
+      }
+    })
+  })
+}
+
+/**
+ * 查询是否有保存的答题记录
+ * menu:套题id
+ */
+const checkSaveHistory = (menu)=>{
   return new Promise((resolve, reject) => {
     const query = wx.Bmob.Query('history')
     let current = wx.Bmob.User.current();
     let uid = current.objectId;
     query.equalTo('menu','==',menu)
     query.equalTo('user','==',uid)
+    query.equalTo('saveStatus','==',0)
     query.find().then(res=>{
-      if(res.length>0){
-        query.get(res[0].objectId).then(res1=>{
-          res1.set('score',score)
-          res1.set('questionList',questionList)
-          res1.save().then(res2=>{
-            console.log(res2)
-            resolve({ 'result': res[0].objectId })
-          })
-        })
+      if (res.length > 0) {
+        resolve({ 'result': true , 'data':res[0]})
       }else{
-        const pointer = wx.Bmob.Pointer('_User')
-        const poiID = pointer.set(uid)
-        query.set('user',poiID)
-        query.set('score',score)
-        query.set('menu',menu)
-        query.set('questionMenu', questionMenu)
-        query.set('questionList',questionList)
-        query.save().then(res2=>{
-          console.log(res2)
-          resolve({ 'result': res2.objectId})
-        })
+        resolve({ 'result': false })
       }
     })
   })
@@ -321,6 +373,7 @@ const getRank = (menu)=>{
     const query = wx.Bmob.Query('history')
     query.select("user,score");
     query.equalTo('menu','==',menu)
+    query.equalTo('saveStatus','==',1)
     query.include('user')
     query.order('-score')
     query.find().then(res=>{
@@ -345,6 +398,7 @@ const getHistoryList =()=>{
     let uid = current.objectId;
     const query = wx.Bmob.Query('history')
     query.equalTo('user','==',uid)
+    query.equalTo('saveStatus', '==', 1)
     query.order('-createdAt')
     query.find().then(res=>{
       console.log(res.length)
@@ -388,6 +442,7 @@ module.exports = {
   getQuestions: getQuestions,
   getSetting: getSetting,
   addHistory: addHistory,
+  checkSaveHistory: checkSaveHistory,
   getHistory: getHistory,
   getBeatNum: getBeatNum,
   getAverage: getAverage,
@@ -398,5 +453,5 @@ module.exports = {
   statistics: statistics,
   getRank: getRank,
   getHistoryList: getHistoryList,
-  addFeedBack: addFeedBack
+  addFeedBack: addFeedBack,
 }
